@@ -30,7 +30,7 @@ namespace TaskManagement.API.Core.Services
 
             return users;
         }
-// here s code
+
         public async Task<UserDto> GetUserByIdAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
