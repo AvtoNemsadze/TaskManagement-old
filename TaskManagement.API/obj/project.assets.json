@@ -5068,11 +5068,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\PC\\Desktop\\Dev\\projects\\TaskManagement\\TaskManagement.API\\TaskManagement.API.csproj",
+      "projectUniqueName": "C:\\Users\\PC\\Documents\\TaskManagement.API\\TaskManagement.API\\TaskManagement.API.csproj",
       "projectName": "TaskManagement.API",
-      "projectPath": "C:\\Users\\PC\\Desktop\\Dev\\projects\\TaskManagement\\TaskManagement.API\\TaskManagement.API.csproj",
+      "projectPath": "C:\\Users\\PC\\Documents\\TaskManagement.API\\TaskManagement.API\\TaskManagement.API.csproj",
       "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\PC\\Desktop\\Dev\\projects\\TaskManagement\\TaskManagement.API\\obj\\",
+      "outputPath": "C:\\Users\\PC\\Documents\\TaskManagement.API\\TaskManagement.API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",

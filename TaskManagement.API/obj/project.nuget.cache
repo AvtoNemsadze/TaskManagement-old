@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YRN3lc7ETG/e/34dJ9b6BhJT8OOnrxkN8bvSpkr4TbIz6+LCa06lVbA5o31thyCHfygvfq4a8UqyZR2X0hafwQ==",
+  "dgSpecHash": "G1nsRXNmWWFvSe4EEzzoCeHvxq5ynfhwMXyYW0NubS8ppZL9Nhnf+neS1sweZ5vvgq2LFCnnUpDZpoP8IJfPXg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\PC\\Desktop\\Dev\\projects\\TaskManagement\\TaskManagement.API\\TaskManagement.API.csproj",
+  "projectFilePath": "C:\\Users\\PC\\Documents\\TaskManagement.API\\TaskManagement.API\\TaskManagement.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PC\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
