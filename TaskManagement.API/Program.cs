@@ -15,10 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 // auth config
-builder.Services
-    .AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+//builder.Services
+//    .AddIdentity<ApplicationUser, IdentityRole>()
+//    .AddEntityFrameworkStores<ApplicationDbContext>()
+//    .AddDefaultTokenProviders();
 
 // Config Identity
 builder.Services.Configure<IdentityOptions>(options =>
@@ -68,7 +68,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.AddScoped<ITaskService, TaskService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
+//builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthService, NewAuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<DbInitializer>();
 
