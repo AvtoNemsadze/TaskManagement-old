@@ -12,5 +12,11 @@ namespace TaskManagement.API.Core.DbContexts
 
         public DbSet<TaskEntity> Tasks { get; set; }
         public DbSet<UserEntity> Users { get; set; }
+        public DbSet<RoleEntity> Roles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RoleEntity>().HasData(RoleSeedData.Roles);
+        }
     }
 }

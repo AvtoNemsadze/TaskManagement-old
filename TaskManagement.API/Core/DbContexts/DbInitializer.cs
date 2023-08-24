@@ -1,5 +1,6 @@
 ﻿using TaskManagement.API.Core.Entities;
-using TaskStatus = TaskManagement.API.Core.Entities.TaskStatus;
+using TaskManagement.API.Core.Enums;
+using TaskStatus = TaskManagement.API.Core.Enums.TaskStatus;
 
 namespace TaskManagement.API.Core.DbContexts
 {

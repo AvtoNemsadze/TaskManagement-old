@@ -4,7 +4,7 @@ using TaskManagement.API.Core.DbContexts;
 using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Entities;
 using TaskManagement.API.Core.Interface;
-using TaskStatus = TaskManagement.API.Core.Entities.TaskStatus;
+using TaskStatus = TaskManagement.API.Core.Enums.TaskStatus;
 
 namespace TaskManagement.API.Core.Services
 {

@@ -70,7 +70,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<ITaskService, TaskService>();
 //builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthService, NewAuthService>();
-builder.Services.AddScoped<IUserService, UserService>();
+//builder.Services.AddScoped<IUserService, UserService>(); ???
 builder.Services.AddScoped<DbInitializer>();
 
 var app = builder.Build();
@@ -87,24 +87,16 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    var dbInitializer = services.GetRequiredService<DbInitializer>();
-//    dbInitializer.SeedData(); 
-//}
-
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var dbInitializer = services.GetRequiredService<DbInitializer>();
-    var authService = services.GetRequiredService<IAuthService>(); // Get your IAuthService instance
+    //var authService = services.GetRequiredService<IAuthService>(); // Get your IAuthService instance
 
     // Seed Roles
-    authService.SeedRolesAsync().Wait(); // Wait for it to complete before proceeding
+    //authService.SeedRolesAsync().Wait(); // Wait for it to complete before proceeding
 
     // Seed Data
     dbInitializer.SeedData();
 }
 app.Run();
-// change repository folder and file name
