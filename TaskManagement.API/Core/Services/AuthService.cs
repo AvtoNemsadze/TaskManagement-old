@@ -104,9 +104,6 @@ namespace TaskManagement.API.Core.Services
 
             return new JwtSecurityTokenHandler().WriteToken(tokenObject);
         }
-
-
-
         #endregion
 
         #region RegisterAsync
