@@ -16,8 +16,8 @@ namespace TaskManagement.API.Core.DbContexts
             new RoleEntity { RoleName = UserRoles.ProductManager.ToString(), Description = "ProductManager Role" },
 
             // System roles
-            new RoleEntity { RoleName = SystemRoles.ADMIN, Description = "Administrator Role" },
-            new RoleEntity { RoleName = SystemRoles.SUPERADMIN, Description = "Super Administrator Role" }
+            new RoleEntity { RoleName = SystemRoles.ADMIN },
+            new RoleEntity { RoleName = SystemRoles.SUPERADMIN }
         };
     }
 

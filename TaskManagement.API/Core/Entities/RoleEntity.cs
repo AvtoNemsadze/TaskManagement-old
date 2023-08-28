@@ -14,6 +14,6 @@ namespace TaskManagement.API.Core.Entities
         public string? Description { get; set; }
 
         // relation to RoleEntity
-        public ICollection<UserEntity> Users { get; set; } = new List<UserEntity>();
+        public ICollection<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
     }
 }

@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using TaskManagement.API.Core.DbContexts;
 using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Entities;
-using TaskManagement.API.Core.Enums;
 using TaskManagement.API.Core.Interface;
 
 namespace TaskManagement.API.Core.Services
@@ -11,49 +15,89 @@ namespace TaskManagement.API.Core.Services
     public class NewAuthService : IAuthService
     {
         private readonly ApplicationDbContext _context;
-        public NewAuthService(ApplicationDbContext context)
+        private readonly IConfiguration _configuration;
+        public NewAuthService(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration)); ;
         }
 
-
-        public Task<AuthServiceResponseDto> LoginAsync(LoginDto loginDto)
+        #region SeedRolesAsync
+        public async Task<AuthServiceResponseDto> SeedRolesAsync()
         {
-            throw new NotImplementedException();
-        }
+            var existingRoles = await _context.Roles.ToListAsync();
 
-        public Task<AuthServiceResponseDto> MakeAdminAsync(UpdatePermissionDto updatePermissionDto)
+            var rolesToSeed = RoleSeedData.Roles.Where(role => !existingRoles.Any(existingRole => existingRole.RoleName == role.RoleName));
+
+            foreach (var role in rolesToSeed)
+            {
+                _context.Roles.AddRange(role);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return new AuthServiceResponseDto { IsSucceed = true, Message = "Roles seeded successfully." };
+        }
+        #endregion
+
+        #region LoginAsync
+        public async Task<AuthServiceResponseDto> LoginAsync(LoginDto loginDto)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FirstOrDefaultAsync(user => user.UserName == loginDto.UserName);
+            if (user is null)
+                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid Credentials" };
+
+            var hashedPassword = HashPassword(loginDto.Password, Convert.FromBase64String(user.PasswordSalt));
+
+            if (hashedPassword != user.PasswordHash)
+            {
+                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid Credentials" };
+            }
+
+            var authClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("JWTID", Guid.NewGuid().ToString()),
+                new Claim("FirstName", user.FirstName),
+                new Claim("LastName", user.LastName)
+            };
+
+            var token = GenerateNewJsonWebToken(authClaims);
+
+            return new AuthServiceResponseDto() { IsSucceed = true, Message = token };
         }
 
-        public Task<AuthServiceResponseDto> MakeSuperAdminAsync(UpdatePermissionDto updatePermissionDto)
+        private string GenerateNewJsonWebToken(List<Claim> claims)
         {
-            throw new NotImplementedException();
+            var authSecret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+            var tokenObject = new JwtSecurityToken(
+                    issuer: _configuration["JWT:ValidIssuer"],
+                    audience: _configuration["JWT:ValidAudience"],
+                    expires: DateTime.Now.AddHours(1),
+                    claims: claims,
+                    signingCredentials: new SigningCredentials(authSecret, SecurityAlgorithms.HmacSha256)
+                );
+
+            string token = new JwtSecurityTokenHandler().WriteToken(tokenObject);
+
+            return token;
         }
+        #endregion
 
-
-        public Task<AuthServiceResponseDto> SeedRolesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-
-
+        #region RegisterAsync
         public async Task<AuthServiceResponseDto> RegisterAsync(RegisterDto registerDto)
         {
-            var isExistUser = await _context.Users.FindAsync(registerDto.UserName);
+            var isExistUser = await _context.Users.FirstOrDefaultAsync(user => user.UserName == registerDto.UserName);
 
             if (isExistUser != null)
                 return new AuthServiceResponseDto() { IsSucceed = false, Message = "UserName Already Exsist" };
 
-            var parsedUserRole = Enum.Parse<UserRoles>(registerDto.UserRole);
             var salt = GenerateSalt();
             var hashedPassword = HashPassword(registerDto.Password, salt);
 
-            UserEntity newUser = new UserEntity()
+            ApplicationUser appUser = new ApplicationUser()
             {
                 FirstName = registerDto.FirstName,
                 LastName = registerDto.LastName,
@@ -61,11 +105,20 @@ namespace TaskManagement.API.Core.Services
                 UserName = registerDto.UserName,
                 PasswordHash = hashedPassword,
                 PasswordSalt = Convert.ToBase64String(salt),
-                RoleName = parsedUserRole.ToString(),
-                CreatedDate = DateTime.UtcNow
+                CreatedDate = DateTime.UtcNow,
+                RoleId = registerDto.RoleId,
             };
 
-            _context.Users.Add(newUser);
+            UserRoleEntity userRoles = new UserRoleEntity()
+            {
+                UserId = appUser.Id,
+                RoleId = appUser.RoleId,
+                UserName = appUser.UserName,
+            };
+
+            _context.Users.Add(appUser);
+            _context.UserRoles.Add(userRoles);
+
             if (await _context.SaveChangesAsync() > 0)
             {
                 return new AuthServiceResponseDto() { IsSucceed = true, Message = "User Created Successfully" };
@@ -74,7 +127,7 @@ namespace TaskManagement.API.Core.Services
             {
                 return new AuthServiceResponseDto() { IsSucceed = false, Message = "Failed to save user data." };
             }
-
+           
         }
 
         private string HashPassword(string password, byte[] salt)
@@ -83,7 +136,6 @@ namespace TaskManagement.API.Core.Services
             {
                 byte[] hash = pbkdf2.GetBytes(32); // 32 bytes for a 256-bit hash
 
-                // Combine the salt and hash into a single array
                 byte[] hashBytes = new byte[48]; // 16 bytes salt + 32 bytes hash
                 Array.Copy(salt, 0, hashBytes, 0, 16);
                 Array.Copy(hash, 0, hashBytes, 16, 32);
@@ -100,6 +152,18 @@ namespace TaskManagement.API.Core.Services
                 rng.GetBytes(salt);
             }
             return salt;
+        }
+        #endregion
+
+        // user system roles
+        public Task<AuthServiceResponseDto> MakeAdminAsync(UpdatePermissionDto updatePermissionDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<AuthServiceResponseDto> MakeSuperAdminAsync(UpdatePermissionDto updatePermissionDto)
+        {
+            throw new NotImplementedException();
         }
 
     }

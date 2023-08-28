@@ -91,8 +91,15 @@ namespace TaskManagement.API.Core.DbContexts
                     Status = TaskStatus.Started.ToString(),    
                     Priority = TaskPriority.Low.ToString()
                 },
+                new TaskEntity
+                {
+                    Title = "Create Database Schema",
+                    Description = "Create Database Schema and optimize slow-performing database operations",
+                    DueDate = DateTime.UtcNow.AddDays(8),
+                    Status = TaskStatus.Started.ToString(),
+                    Priority = TaskPriority.Low.ToString()
+                },
             };
-
                 _context.Tasks.AddRange(tasks);
                 _context.SaveChanges();
             }

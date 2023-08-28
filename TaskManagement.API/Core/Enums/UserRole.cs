@@ -3,6 +3,7 @@
     // regular roles
     public enum UserRoles
     {
+        None = 0,
         Tester,
         Developer,
         Designer,

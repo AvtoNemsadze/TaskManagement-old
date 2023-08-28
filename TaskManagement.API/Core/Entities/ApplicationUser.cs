@@ -2,15 +2,15 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Policy;
 using TaskManagement.API.Core.Enums;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TaskManagement.API.Core.Entities
 {
-    public class UserEntity
+    public class ApplicationUser
     {
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public int Id { get; set; }
+
         [Required]
         [StringLength(50, MinimumLength = 3)]
         public string UserName { get; set; }
@@ -26,10 +26,6 @@ namespace TaskManagement.API.Core.Entities
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
-        [Required]
-        [EnumDataType(typeof(UserRoles))]
-        public string RoleName { get; set; }
 
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }

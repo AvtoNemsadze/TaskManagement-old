@@ -119,21 +119,21 @@
 //            }
 //        }
 
-//        public async Task<AuthServiceResponseDto> LoginAsync(LoginDto loginDto)
-//        {
-//            var user = await _userManager.FindByNameAsync(loginDto.UserName);
+//public async Task<AuthServiceResponseDto> LoginAsync(LoginDto loginDto)
+//{
+//    var user = await _userManager.FindByNameAsync(loginDto.UserName);
 
-//            if (user is null)
-//                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid Credentials" };
+//    if (user is null)
+//        return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid Credentials" };
 
-//            var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+//    var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, loginDto.Password);
 
-//            if (!isPasswordCorrect)
-//                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid Credentials" };
+//    if (!isPasswordCorrect)
+//        return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid Credentials" };
 
-//            var userRoles = await _userManager.GetRolesAsync(user);
+//    var userRoles = await _userManager.GetRolesAsync(user);
 
-//            var authClaims = new List<Claim>
+//    var authClaims = new List<Claim>
 //            {
 //                new Claim(ClaimTypes.Name, user.UserName),
 //                new Claim(ClaimTypes.NameIdentifier, user.Id),
@@ -142,15 +142,15 @@
 //                new Claim("LastName", user.LastName)
 //            };
 
-//            foreach (var userRole in userRoles)
-//            {
-//                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-//            }
+//    foreach (var userRole in userRoles)
+//    {
+//        authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+//    }
 
-//            var token = GenerateNewJsonWebToken(authClaims);
+//    var token = GenerateNewJsonWebToken(authClaims);
 
-//            return new AuthServiceResponseDto() { IsSucceed = true, Message = token };
-//        }
+//    return new AuthServiceResponseDto() { IsSucceed = true, Message = token };
+//}
 
 //        private string GenerateNewJsonWebToken(List<Claim> claims)
 //        {
