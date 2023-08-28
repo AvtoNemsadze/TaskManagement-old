@@ -7,18 +7,11 @@ using System.Text;
 using TaskManagement.API.Core.DbContexts;
 using TaskManagement.API.Core.Entities;
 using TaskManagement.API.Core.Interface;
+using TaskManagement.API.Core.OtherObjects;
 using TaskManagement.API.Core.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-// auth config
-//builder.Services
-//    .AddIdentity<ApplicationUser, IdentityRole>()
-//    .AddEntityFrameworkStores<ApplicationDbContext>()
-//    .AddDefaultTokenProviders();
 
 // Config Identity
 builder.Services.Configure<IdentityOptions>(options =>
@@ -67,10 +60,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("local"));
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOrSuperAdminPolicy", policy =>
+    {
+        policy.RequireRole(SystemRoles.ADMIN, SystemRoles.SUPERADMIN);
+    });
+});
+
 builder.Services.AddScoped<ITaskService, TaskService>();
-//builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IAuthService, NewAuthService>();
-//builder.Services.AddScoped<IUserService, UserService>(); ???
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<DbInitializer>();
 
 var app = builder.Build();

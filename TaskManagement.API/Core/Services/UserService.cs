@@ -1,69 +1,78 @@
-﻿//using Microsoft.AspNetCore.Identity;
-//using Microsoft.EntityFrameworkCore;
-//using TaskManagement.API.Core.Dtos;
-//using TaskManagement.API.Core.Entities;
-//using TaskManagement.API.Core.Interface;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using TaskManagement.API.Core.DbContexts;
+using TaskManagement.API.Core.Dtos;
+using TaskManagement.API.Core.Entities;
+using TaskManagement.API.Core.Interface;
 
-//namespace TaskManagement.API.Core.Services
-//{
-//    public class UserService : IUserService
-//    {
-//        private readonly UserManager<ApplicationUser> _userManager;
+namespace TaskManagement.API.Core.Services
+{
+    public class UserService : IUserService
+    {
+        //private readonly UserManager<ApplicationUser> _userManager;
 
-//        public UserService(UserManager<ApplicationUser> userManager)
-//        {
-//            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-//        }
+        private readonly ApplicationDbContext _context;
+        public UserService(ApplicationDbContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
 
-//        public async Task<List<UserDto>> GetAllUsersAsync()
-//        {
-//            var users = await _userManager.Users
-//            .Select(u => new UserDto
-//            {
-//                FirstName = u.FirstName,
-//                LastName = u.LastName,
-//                UserName = u.UserName,
-//                Email = u.Email,
-//                Id = u.Id,
-//            })
-//            .ToListAsync();
+        async Task<List<UserDto>> IUserService.GetAllUsersAsync()
+        {
+            var usersWithRoles = await _context.Users
+                .Include(u => u.Role)
+                .Select(u => new UserDto
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    UserName = u.UserName,
+                    Email = u.Email,
+                    Role = u.Role.RoleName  
+                })
+                .ToListAsync();
 
-//            return users;
-//        }
+            return usersWithRoles;
+        }
 
-//        public async Task<UserDto> GetUserByIdAsync(string userId)
-//        {
-//            var user = await _userManager.FindByIdAsync(userId);
 
-//            var userDto = new UserDto
-//            {
-//                FirstName = user.FirstName,
-//                LastName = user.LastName,
-//                UserName = user.UserName,
-//                Email = user.Email,
-//                Id = user.Id
-//            };
+        public async Task<UserDto?> GetUserByIdAsync(int userId)
+        {
+            var user = await _context.Users
+               .Include(u => u.Role)
+               .FirstOrDefaultAsync(u => u.Id == userId);
 
-//            return userDto;
-//        }
+            if (user == null)
+            {
+                return null;
+            }
 
-//        public async Task<AuthServiceResponseDto> DeleteUserByIdAsync(string userId)
-//        {
-//            var user = await _userManager.FindByIdAsync(userId);
+            var userDto = new UserDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                Email = user.Email,
+                Id = user.Id,
+                Role = user.Role.RoleName
+            };
 
-//            if (user == null)
-//            {
-//                return new AuthServiceResponseDto() { IsSucceed = false, Message = "User not found." };
-//            }
+            return userDto;
+        }
 
-//            var result = await _userManager.DeleteAsync(user);
+        public async Task<AuthServiceResponseDto> DeleteUserByIdAsync(int userId)
+        {
+            var userToDelete = await _context.Users.FindAsync(userId);
 
-//            if (result.Succeeded)
-//            {
-//                return new AuthServiceResponseDto() { IsSucceed = true, Message = "User deleted successfully." };
-//            }
+            if (userToDelete == null)
+            {
+                return new AuthServiceResponseDto() { IsSucceed = false, Message = "User not found." };
+            }
 
-//            return new AuthServiceResponseDto() { IsSucceed = false, Message = "Error deleting user." };
-//        }
-//    }
-//}
+            _context.Users.Remove(userToDelete);
+            await _context.SaveChangesAsync();
+
+            return new AuthServiceResponseDto() { IsSucceed = true, Message = "User deleted successfully." };
+        }
+    }
+}

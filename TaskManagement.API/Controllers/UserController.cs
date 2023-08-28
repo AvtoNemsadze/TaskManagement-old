@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagement.API.Core.Interface;
+using TaskManagement.API.Core.OtherObjects;
 
 namespace TaskManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -22,7 +25,7 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<IActionResult> GetUserById(string userId)
+        public async Task<IActionResult> GetUserById(int userId)
         {
             var user = await _userService.GetUserByIdAsync(userId);
 
@@ -35,17 +38,17 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpDelete("{userId}")]
-        //[Authorize(Roles = StaticUserRoles.ADMIN)] 
-        public async Task<IActionResult> DeleteUser(string userId)
+        [Authorize(Policy = "AdminOrSuperAdminPolicy")]
+        public async Task<IActionResult> DeleteUserById(int userId)
         {
-            var deleteResult = await _userService.DeleteUserByIdAsync(userId);
+            var response = await _userService.DeleteUserByIdAsync(userId);
 
-            if (deleteResult.IsSucceed)
+            if (!response.IsSucceed)
             {
-                return Ok(deleteResult);
+                return NotFound(response);
             }
 
-            return BadRequest(deleteResult);
+            return Ok(response);
         }
     }
 }

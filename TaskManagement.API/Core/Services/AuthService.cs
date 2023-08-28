@@ -1,198 +1,248 @@
-﻿//using Microsoft.AspNetCore.Identity;
-//using Microsoft.EntityFrameworkCore;
-//using Microsoft.IdentityModel.Tokens;
-//using System.IdentityModel.Tokens.Jwt;
-//using System.Security.Claims;
-//using System.Text;
-//using TaskManagement.API.Core.DbContexts;
-//using TaskManagement.API.Core.Dtos;
-//using TaskManagement.API.Core.Entities;
-//using TaskManagement.API.Core.Interface;
-//using TaskManagement.API.Core.OtherObjects;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
+using TaskManagement.API.Core.DbContexts;
+using TaskManagement.API.Core.Dtos;
+using TaskManagement.API.Core.Entities;
+using TaskManagement.API.Core.Enums;
+using TaskManagement.API.Core.Interface;
+using TaskManagement.API.Core.OtherObjects;
 
-//namespace TaskManagement.API.Core.Services
-//{
-//    public class AuthService : IAuthService
-//    {
-//        private readonly UserManager<ApplicationUser> _userManager;
-//        private readonly RoleManager<IdentityRole> _roleManager;
-//        private readonly IConfiguration _configuration;
-//        private readonly ApplicationDbContext _context;
-//        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> rolemanager, IConfiguration configuration, ApplicationDbContext context)
-//        {
-//            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-//            _roleManager = rolemanager ?? throw new ArgumentNullException(nameof(rolemanager));
-//            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-//            _context = context ?? throw new ArgumentNullException(nameof(context));
-//        }
+namespace TaskManagement.API.Core.Services
+{
+    public class AuthService : IAuthService
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
+        public AuthService(ApplicationDbContext context, IConfiguration configuration)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration)); ;
+        }
 
-//        public async Task<AuthServiceResponseDto> SeedRolesAsync()
-//        {
-//            bool isAdminRoleExist = await _roleManager.RoleExistsAsync(StaticUserRoles.ADMIN);
-//            bool isUserRoleExist = await _roleManager.RoleExistsAsync(StaticUserRoles.USER);
-//            bool isSuperAdminRoleExist = await _roleManager.RoleExistsAsync(StaticUserRoles.SUPERADMIN);
+        #region SeedRolesAsync
+        public async Task<AuthServiceResponseDto> SeedRolesAsync()
+        {
+            var existingRoles = await _context.Roles.ToListAsync();
 
-//            bool isDeveloperExist = await _roleManager.RoleExistsAsync(StaticUserRoles.DEVELOPER);
-//            bool isTeamLeadExist = await _roleManager.RoleExistsAsync(StaticUserRoles.TEAMLEAD);
-//            bool isDesignerExist = await _roleManager.RoleExistsAsync(StaticUserRoles.DESIGNER);
-//            bool isTesterExist = await _roleManager.RoleExistsAsync(StaticUserRoles.TESTER);
+            var rolesToSeed = RoleSeedData.Roles.Where(role => !existingRoles.Any(existingRole => existingRole.RoleName == role.RoleName));
 
-//            if (isAdminRoleExist && isUserRoleExist && isSuperAdminRoleExist && isDeveloperExist && isTeamLeadExist && isDesignerExist && isTesterExist)
-//                return new AuthServiceResponseDto() { IsSucceed = true, Message = "Roles Seeding Is Already Done" };
+            foreach (var role in rolesToSeed)
+            {
+                _context.Roles.AddRange(role);
+            }
 
-//            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.USER));
-//            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.ADMIN));
-//            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.SUPERADMIN));
-//            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.DEVELOPER));
-//            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.DESIGNER));
-//            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.TEAMLEAD));
-//            await _roleManager.CreateAsync(new IdentityRole(StaticUserRoles.TESTER));
+            await _context.SaveChangesAsync();
 
-//            return new AuthServiceResponseDto() { IsSucceed = true, Message = "Roles Seeding Done Successfully" };
-//        }
+            return new AuthServiceResponseDto { IsSucceed = true, Message = "Roles seeded successfully." };
+        }
+        #endregion
 
+        #region LoginAsync
+        public async Task<AuthServiceResponseDto> LoginAsync(LoginDto loginDto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(user => user.UserName == loginDto.UserName);
+            if (user is null)
+                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid Credentials" };
 
-//        public async Task<AuthServiceResponseDto> RegisterAsync(RegisterDto registerDto)
-//        {
-//            var isExistUser = await _userManager.FindByNameAsync(registerDto.UserName);
-//            if (isExistUser != null)
-//                return new AuthServiceResponseDto() { IsSucceed = false, Message = "UserName Already Exsist" };
+            var hashedPassword = HashPassword(loginDto.Password, Convert.FromBase64String(user.PasswordSalt));
 
-//            // AspNetUser table => IdentityUser library
-//            ApplicationUser newUser = new ApplicationUser()
-//            {
-//                FirstName = registerDto.FirstName,
-//                LastName = registerDto.LastName,
-//                Email = registerDto.Email,
-//                UserName = registerDto.UserName,
-//                SecurityStamp = Guid.NewGuid().ToString()
-//            };
+            if (hashedPassword != user.PasswordHash)
+            {
+                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid Credentials" };
+            }
 
-//            var createUserResult = await _userManager.CreateAsync(newUser, registerDto.Password);
+            var userRoles = await _context.UserRoles
+             .Where(ur => ur.UserId == user.Id)
+             .Join(_context.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r.RoleName)
+             .ToListAsync();
 
-//            if (!createUserResult.Succeeded)
-//            {
-//                var errorString = "User Creation Failed Because: ";
+            var authClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("JWTID", Guid.NewGuid().ToString()),
+                new Claim("FirstName", user.FirstName),
+                new Claim("LastName", user.LastName)
+            };
 
-//                foreach (var error in createUserResult.Errors)
-//                {
-//                    errorString += " # " + error.Description;
-//                }
-//                return new AuthServiceResponseDto() { IsSucceed = false, Message = errorString };
-//            }
+            foreach (var role in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
-//            // Add a Default User role to all user
-//            await _userManager.AddToRoleAsync(newUser, StaticUserRoles.USER);
+            var token = GenerateNewJsonWebToken(authClaims);
 
+            return new AuthServiceResponseDto() { IsSucceed = true, Message = token };
+        }
 
-//            // add registered user to UserEntity
-//            if (createUserResult.Succeeded)
-//            {
-//                // Convert string UserRole to UserRole enum
+        private string GenerateNewJsonWebToken(List<Claim> claims)
+        {
+            var authSecret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
-//                UserEntity userEntity = new UserEntity()
-//                {
-//                    Id = isExistUser.Id,
-//                    PasswordHash = isExistUser.PasswordHash,
-//                    UserName = registerDto.UserName,
-//                    FirstName = registerDto.FirstName,
-//                    LastName = registerDto.LastName,
-//                    Email = registerDto.Email,
-//                    Role = registerDto.UserRole.ToString(),
-//                    PhoneNumber = registerDto.PhoneNumber,
-//                    CreatedDate = DateTime.UtcNow,
-//                };
+            var tokenObject = new JwtSecurityToken(
+                    issuer: _configuration["JWT:ValidIssuer"],
+                    audience: _configuration["JWT:ValidAudience"],
+                    expires: DateTime.Now.AddHours(1),
+                    claims: claims,
+                    signingCredentials: new SigningCredentials(authSecret, SecurityAlgorithms.HmacSha256)
+                );
 
-//                await _context.Users.AddAsync(userEntity);
-//                if (await _context.SaveChangesAsync() >= 0)
-//                {
-//                    return new AuthServiceResponseDto() { IsSucceed = true, Message = "User Created Successfully" };
-//                }
-//                else
-//                {
-//                    return new AuthServiceResponseDto() { IsSucceed = false, Message = "Failed to save user data." };
-//                }
-//            }
-//            else
-//            {
-//                return new AuthServiceResponseDto() { IsSucceed = false, Message = "User Not Found" };
-//            }
-//        }
+            string token = new JwtSecurityTokenHandler().WriteToken(tokenObject);
 
-//public async Task<AuthServiceResponseDto> LoginAsync(LoginDto loginDto)
-//{
-//    var user = await _userManager.FindByNameAsync(loginDto.UserName);
+            return token;
+        }
+        #endregion
 
-//    if (user is null)
-//        return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid Credentials" };
+        #region RegisterAsync
+        public async Task<AuthServiceResponseDto> RegisterAsync(RegisterDto registerDto)
+        {
+            var isExistUser = await _context.Users.FirstOrDefaultAsync(user => user.UserName == registerDto.UserName);
 
-//    var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+            if (isExistUser != null)
+                return new AuthServiceResponseDto() { IsSucceed = false, Message = "UserName Already Exsist" };
 
-//    if (!isPasswordCorrect)
-//        return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid Credentials" };
+            var salt = GenerateSalt();
+            var hashedPassword = HashPassword(registerDto.Password, salt);
 
-//    var userRoles = await _userManager.GetRolesAsync(user);
+            ApplicationUser appUser = new ApplicationUser()
+            {
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.LastName,
+                Email = registerDto.Email,
+                UserName = registerDto.UserName,
+                PasswordHash = hashedPassword,
+                PasswordSalt = Convert.ToBase64String(salt),
+                CreatedDate = DateTime.UtcNow,
+                RoleId = registerDto.RoleId,
+            };
 
-//    var authClaims = new List<Claim>
-//            {
-//                new Claim(ClaimTypes.Name, user.UserName),
-//                new Claim(ClaimTypes.NameIdentifier, user.Id),
-//                new Claim("JWTID", Guid.NewGuid().ToString()),
-//                new Claim("FirstName", user.FirstName),
-//                new Claim("LastName", user.LastName)
-//            };
+            UserRoleEntity userRoles = new UserRoleEntity()
+            {
+                UserId = appUser.Id,
+                RoleId = appUser.RoleId,
+                UserName = appUser.UserName,
+            };
 
-//    foreach (var userRole in userRoles)
-//    {
-//        authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-//    }
+            _context.Users.Add(appUser);
+            _context.UserRoles.Add(userRoles);
 
-//    var token = GenerateNewJsonWebToken(authClaims);
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                return new AuthServiceResponseDto() { IsSucceed = true, Message = "User Created Successfully" };
+            }
+            else
+            {
+                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Failed to save user data." };
+            }
+           
+        }
 
-//    return new AuthServiceResponseDto() { IsSucceed = true, Message = token };
-//}
+        private string HashPassword(string password, byte[] salt)
+        {
+            using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000, HashAlgorithmName.SHA256))
+            {
+                byte[] hash = pbkdf2.GetBytes(32); // 32 bytes for a 256-bit hash
 
-//        private string GenerateNewJsonWebToken(List<Claim> claims)
-//        {
-//            var authSecret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+                byte[] hashBytes = new byte[48]; // 16 bytes salt + 32 bytes hash
+                Array.Copy(salt, 0, hashBytes, 0, 16);
+                Array.Copy(hash, 0, hashBytes, 16, 32);
 
-//            var tokenObject = new JwtSecurityToken(
-//                    issuer: _configuration["JWT:ValidIssuer"],
-//                    audience: _configuration["JWT:ValidAudience"],
-//                    expires: DateTime.Now.AddHours(1),
-//                    claims: claims,
-//                    signingCredentials: new SigningCredentials(authSecret, SecurityAlgorithms.HmacSha256)
-//                );
+                return Convert.ToBase64String(hashBytes);
+            }
+        }
 
-//            string token = new JwtSecurityTokenHandler().WriteToken(tokenObject);
+        private static byte[] GenerateSalt()
+        {
+            byte[] salt = new byte[16];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+            return salt;
+        }
+        #endregion
 
-//            return token;
-//        }
+        // user system roles
 
-//        public async Task<AuthServiceResponseDto> MakeAdminAsync(UpdatePermissionDto updatePermissionDto)
-//        {
-//            var user = await _userManager.FindByNameAsync(updatePermissionDto.UserName);
+        #region MakeAdminAsync
+        public async Task<AuthServiceResponseDto> MakeAdminAsync(UpdatePermissionDto updatePermissionDto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == updatePermissionDto.UserName);
 
-//            if (user is null)
-//                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid User name !!!" };
+            if (user is null)
+                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid User name !!!" };
 
-//            await _userManager.AddToRoleAsync(user, StaticUserRoles.ADMIN);
+            var existingRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == SystemRoles.ADMIN);
+            if (existingRole == null)
+                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Admin role not found." };
 
-//            return new AuthServiceResponseDto() { IsSucceed = true, Message = "Now user is an Admin" };
-//        }
+            var userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId);
+            if (userRole == null)
+                return new AuthServiceResponseDto() { IsSucceed = false, Message = "User role not found." };
 
-//        public async Task<AuthServiceResponseDto> MakeSuperAdminAsync(UpdatePermissionDto updatePermissionDto)
-//        {
-//            var user = await _userManager.FindByNameAsync(updatePermissionDto.UserName);
+            if (userRole.RoleName != SystemRoles.ADMIN)
+            {
+                user.RoleId = existingRole.Id;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
 
-//            if (user is null)
-//                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid User name !!!" };
+                // Update user's UserRoleEntity record
+                var userRoles = await _context.UserRoles.FirstOrDefaultAsync(ur => ur.UserId == user.Id);
+                if (userRoles != null)
+                {
+                    userRoles.RoleId = existingRole.Id;
+                    _context.UserRoles.Update(userRoles);
+                    await _context.SaveChangesAsync();
+                }
 
-//            await _userManager.AddToRoleAsync(user, StaticUserRoles.SUPERADMIN);
+                return new AuthServiceResponseDto() { IsSucceed = true, Message = "Now user is an Admin" };
+            }
 
-//            return new AuthServiceResponseDto() { IsSucceed = true, Message = "Now user is a Super Admin" };
-//        }
+            return new AuthServiceResponseDto() { IsSucceed = false, Message = "User is already an Admin" };
+        }
+        #endregion
 
-//    }
-//}
-//// add test code
+        #region MakeSuperAdminAsync
+        public async Task<AuthServiceResponseDto> MakeSuperAdminAsync(UpdatePermissionDto updatePermissionDto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == updatePermissionDto.UserName);
+
+            if (user is null)
+                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid User name !!!" };
+
+            var existingRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == SystemRoles.SUPERADMIN);
+            if (existingRole == null)
+                return new AuthServiceResponseDto() { IsSucceed = false, Message = "SuperAdmin role not found." };
+
+            var userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId);
+            if (userRole == null)
+                return new AuthServiceResponseDto() { IsSucceed = false, Message = "User role not found." };
+
+            if (userRole.RoleName != SystemRoles.SUPERADMIN)
+            {
+                user.RoleId = existingRole.Id;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+
+                // Update user's UserRoleEntity record
+                var userRoles = await _context.UserRoles.FirstOrDefaultAsync(ur => ur.UserId == user.Id);
+                if (userRoles != null)
+                {
+                    userRoles.RoleId = existingRole.Id;
+                    _context.UserRoles.Update(userRoles);
+                    await _context.SaveChangesAsync();
+                }
+
+                return new AuthServiceResponseDto() { IsSucceed = true, Message = "Now user is a SuperAdmin" };
+            }
+
+            return new AuthServiceResponseDto() { IsSucceed = false, Message = "User is already a SuperAdmin" };
+        }
+        #endregion
+    }
+}
