@@ -18,6 +18,7 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AdminOrSuperAdminPolicy")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userService.GetAllUsersAsync();
@@ -25,6 +26,7 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpGet("{userId}")]
+        [Authorize(Policy = "AdminOrSuperAdminPolicy")]
         public async Task<IActionResult> GetUserById(int userId)
         {
             var user = await _userService.GetUserByIdAsync(userId);
@@ -38,7 +40,7 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpDelete("{userId}")]
-        [Authorize(Policy = "AdminOrSuperAdminPolicy")]
+        [Authorize(Roles = SystemRoles.SUPERADMIN)]
         public async Task<IActionResult> DeleteUserById(int userId)
         {
             var response = await _userService.DeleteUserByIdAsync(userId);

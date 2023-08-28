@@ -61,13 +61,22 @@ namespace TaskManagement.API.Core.Services
              .Join(_context.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r.RoleName)
              .ToListAsync();
 
+            var (accessToken, refreshToken) = GenerateTokens(user.Id, userRoles, user.UserName);
+
+            return new AuthServiceResponseDto()
+            {
+                IsSucceed = true,
+                Message = accessToken,
+            };
+        }
+
+        public (string accessToken, string refreshToken) GenerateTokens(int userId, List<string> userRoles, string userName)
+        {
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim("JWTID", Guid.NewGuid().ToString()),
-                new Claim("FirstName", user.FirstName),
-                new Claim("LastName", user.LastName)
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Name, userName),
+                new Claim("JWTID", Guid.NewGuid().ToString())
             };
 
             foreach (var role in userRoles)
@@ -75,27 +84,29 @@ namespace TaskManagement.API.Core.Services
                 authClaims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var token = GenerateNewJsonWebToken(authClaims);
-
-            return new AuthServiceResponseDto() { IsSucceed = true, Message = token };
-        }
-
-        private string GenerateNewJsonWebToken(List<Claim> claims)
-        {
             var authSecret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
-            var tokenObject = new JwtSecurityToken(
-                    issuer: _configuration["JWT:ValidIssuer"],
-                    audience: _configuration["JWT:ValidAudience"],
-                    expires: DateTime.Now.AddHours(1),
-                    claims: claims,
-                    signingCredentials: new SigningCredentials(authSecret, SecurityAlgorithms.HmacSha256)
-                );
+            var accessToken = GenerateJsonWebToken(authClaims, authSecret, _configuration["JWT:ValidIssuer"], _configuration["JWT:ValidAudience"], TimeSpan.FromHours(1));
+            var refreshToken = GenerateJsonWebToken(authClaims, authSecret, _configuration["JWT:ValidIssuer"], _configuration["JWT:ValidAudience"], TimeSpan.FromDays(7));
 
-            string token = new JwtSecurityTokenHandler().WriteToken(tokenObject);
-
-            return token;
+            return (accessToken, refreshToken);
         }
+
+        private static string GenerateJsonWebToken(IEnumerable<Claim> claims, SymmetricSecurityKey key, string issuer, string audience, TimeSpan expiration)
+        {
+            var tokenObject = new JwtSecurityToken(
+                issuer: issuer,
+                audience: audience,
+                expires: DateTime.UtcNow.Add(expiration),
+                claims: claims,
+                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(tokenObject);
+        }
+
+
+
         #endregion
 
         #region RegisterAsync

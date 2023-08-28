@@ -22,6 +22,7 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "AdminOrSuperAdminPolicy")]
         public async Task<IActionResult> CreateTask([FromBody] TaskEntity task)
         {
             try
