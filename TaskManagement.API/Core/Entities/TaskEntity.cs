@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TaskManagement.API.Core.Enums;
 
 namespace TaskManagement.API.Core.Entities
 {
@@ -18,7 +19,7 @@ namespace TaskManagement.API.Core.Entities
 
         public DateTime? DueDate { get; set; } 
 
-        [EnumDataType(typeof(TaskStatus))]
+        [EnumDataType(typeof(Enums.TaskStatus))]
         [MaxLength(50)]
         public string Status { get; set; }
 

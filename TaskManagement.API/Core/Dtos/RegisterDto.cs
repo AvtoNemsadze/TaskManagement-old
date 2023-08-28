@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using TaskManagement.API.Core.Entities;
+using TaskManagement.API.Core.Enums;
 
 namespace TaskManagement.API.Core.Dtos
 {
@@ -20,8 +21,10 @@ namespace TaskManagement.API.Core.Dtos
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
-        [EnumDataType(typeof(UserRole))]
-        public string UserRole { get; set; }
-        public string? PhoneNumber { get; set; }
+        [EnumDataType(typeof(UserRoles))]
+        public int RoleId { get; set; }
+
+        //[EnumDataType(typeof(UserRoles))]
+        //public string UserRole { get; set; }
     }
 }

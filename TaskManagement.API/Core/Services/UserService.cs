@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TaskManagement.API.Core.DbContexts;
 using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Entities;
 using TaskManagement.API.Core.Interface;
@@ -8,32 +9,43 @@ namespace TaskManagement.API.Core.Services
 {
     public class UserService : IUserService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserService(UserManager<ApplicationUser> userManager)
+        private readonly ApplicationDbContext _context;
+        public UserService(ApplicationDbContext context)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<List<UserDto>> GetAllUsersAsync()
+        async Task<List<UserDto>> IUserService.GetAllUsersAsync()
         {
-            var users = await _userManager.Users
-            .Select(u => new UserDto
+            var usersWithRoles = await _context.Users
+                .Include(u => u.Role)
+                .Select(u => new UserDto
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    UserName = u.UserName,
+                    Email = u.Email,
+                    Role = u.Role.RoleName  
+                })
+                .ToListAsync();
+
+            return usersWithRoles;
+        }
+
+
+        public async Task<UserDto?> GetUserByIdAsync(int userId)
+        {
+            var user = await _context.Users
+               .Include(u => u.Role)
+               .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
             {
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                UserName = u.UserName,
-                Email = u.Email,
-                Id = u.Id,
-            })
-            .ToListAsync();
-
-            return users;
-        }
-
-        public async Task<UserDto> GetUserByIdAsync(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
+                return null;
+            }
 
             var userDto = new UserDto
             {
@@ -41,29 +53,26 @@ namespace TaskManagement.API.Core.Services
                 LastName = user.LastName,
                 UserName = user.UserName,
                 Email = user.Email,
-                Id = user.Id
+                Id = user.Id,
+                Role = user.Role.RoleName
             };
 
             return userDto;
         }
 
-        public async Task<AuthServiceResponseDto> DeleteUserByIdAsync(string userId)
+        public async Task<AuthServiceResponseDto> DeleteUserByIdAsync(int userId)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var userToDelete = await _context.Users.FindAsync(userId);
 
-            if (user == null)
+            if (userToDelete == null)
             {
                 return new AuthServiceResponseDto() { IsSucceed = false, Message = "User not found." };
             }
 
-            var result = await _userManager.DeleteAsync(user);
+            _context.Users.Remove(userToDelete);
+            await _context.SaveChangesAsync();
 
-            if (result.Succeeded)
-            {
-                return new AuthServiceResponseDto() { IsSucceed = true, Message = "User deleted successfully." };
-            }
-
-            return new AuthServiceResponseDto() { IsSucceed = false, Message = "Error deleting user." };
+            return new AuthServiceResponseDto() { IsSucceed = true, Message = "User deleted successfully." };
         }
     }
 }

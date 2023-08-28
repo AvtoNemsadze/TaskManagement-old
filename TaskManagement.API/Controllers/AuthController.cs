@@ -28,7 +28,6 @@ namespace TaskManagement.API.Controllers
             return Ok(seedRoles);
         }
 
-        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
@@ -40,10 +39,14 @@ namespace TaskManagement.API.Controllers
             return BadRequest(registerResult);
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var loginResult = await _authService.LoginAsync(loginDto);
 
             if (loginResult.IsSucceed)

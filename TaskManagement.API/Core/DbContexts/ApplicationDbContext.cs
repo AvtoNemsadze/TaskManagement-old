@@ -4,13 +4,15 @@ using TaskManagement.API.Core.Entities;
 
 namespace TaskManagement.API.Core.DbContexts
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
-        public DbSet<TaskEntity> Tasks { get; set; }
-        public DbSet<UserEntity> Users { get; set; }
+        public DbSet<TaskEntity> Tasks { get; set; } 
+        public DbSet<ApplicationUser> Users { get; set; } 
+        public DbSet<RoleEntity> Roles { get; set; } 
+        public DbSet<UserRoleEntity> UserRoles { get; set; }
     }
 }
