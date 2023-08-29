@@ -41,3 +41,12 @@
   • POST /api/auth/register: Register a new user.
   • POST /api/auth/login: Authenticate a user and generate access and refresh tokens.
   • POST /api/auth/refresh-token: Generate a new access token using a valid refresh token.
+
+# Get Started 
+  Follow these steps to set up and run the TaskManagement.API project locally:
+  1. Clone the repository: git clone `https://github.com/AvtoNemsadze/TaskManagement.git`.
+  2. Navigate to the project directory: `cd TaskManagement.API`.
+  3. Install dependencies: `dotnet restore`.
+  4. Configure the database connection in `appsettings.json`.
+  5. Apply database migrations: `dotnet ef database update`
+  6. Run the application: `dotnet run`
