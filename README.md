@@ -17,9 +17,9 @@ The API supports the following roles for users: Tester, Developer, TeamLead, Pro
   allowing individuals to create accounts and gain access to the powerful features of the application. 
   Overview of the registration process: <br />
   
-Step 1: Account Information
+Step 1: Account Information <br />
 Users start by navigating to the registration page, where they are prompted to provide
-essential account information. This includes:
+essential account information. This includes: <br />
 •	<strong>Username:</strong> Users choose a unique username that will identify them within the system.
 •	<strong>Email Address:</strong> A valid email address is required for communication and account recovery.
 •	<strong>Password:</strong> Users create a strong password to secure their account.
