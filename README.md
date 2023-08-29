@@ -33,8 +33,8 @@
   • MS SQL
 
 # API Endpoints
-  • POST /api/task: Create a new task.
-  • GET /api/task: Retrieve a list of all tasks.
+  • POST /api/task: Create a new task. <br />
+  • GET /api/task: Retrieve a list of all tasks. <br />
   • GET /api/task/{id}: Retrieve details of a specific task.
   • PUT /api/task/{id}: Update the details of a task.
   • DELETE /api/task/{id}: Delete a task.
