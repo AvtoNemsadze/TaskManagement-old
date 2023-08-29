@@ -69,9 +69,14 @@ This step includes: <br />
   • GET /api/task/{id}: Retrieve details of a specific task. <br />
   • PUT /api/task/{id}: Update the details of a task. <br />
   • DELETE /api/task/{id}: Delete a task. <br />
+  
   • POST /api/auth/register: Register a new user. <br />
   • POST /api/auth/login: Authenticate a user and generate access and refresh tokens. <br />
   • POST /api/auth/refresh-token: Generate a new access token using a valid refresh token. <br />
+
+  • GET /api/user: Retrieve a list of all users. <br />
+  • GET /api/user/{id}: Retrieve details of a specific user. <br />
+  • DELETE /api/user/{id}: Delete a user. <br />
 
 # Get Started 
   Follow these steps to set up and run the TaskManagement.API project locally:
