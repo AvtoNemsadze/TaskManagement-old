@@ -17,12 +17,18 @@ The API supports the following roles for users: Tester, Developer, TeamLead, Pro
   allowing individuals to create accounts and gain access to the powerful features of the application. 
   Overview of the registration process: <br />
   
-Step 1: Account Information <br />
+<strong>Step 1: Account Information</strong> <br />
 Users start by navigating to the registration page, where they are prompted to provide
 essential account information. This includes: <br />
 •	<strong>Username:</strong> Users choose a unique username that will identify them within the system. <br />
 •	<strong>Email Address:</strong> A valid email address is required for communication and account recovery. <br />
 •	<strong>Password:</strong> Users create a strong password to secure their account.
+
+<strong>Step 2: Profile Details</strong> <br />
+After providing account information, users are guided to enter their profile details.
+This step includes: <br />
+•	<strong>First Name and Last Name:</strong> Users enter their full names for personalized identification. <br />
+•	<strong>User Role:</strong> Users select their designated role (e.g., Tester, Developer, Team Lead, Product Manager, Designer) from the available options. This role defines their responsibilities and permissions within the application. <br />
 
 # Authentication and Authorization
   The API uses JSON Web Tokens (JWT) for authentication and supports role-based authorization. 
