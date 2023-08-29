@@ -14,7 +14,7 @@ The API supports the following roles for users: Tester, Developer, TeamLead, Pro
 
 # User Registration
   The TaskManagement.API provides a user-friendly and secure user registration process, 
-  allowing individuals to create accounts and gain access to the powerful features of the application. 
+  allowing individuals to create accounts and gain access to the powerful features of the application. <br />
   Overview of the registration process: <br />
   
 <strong>Step 1: Account Information</strong> <br />
