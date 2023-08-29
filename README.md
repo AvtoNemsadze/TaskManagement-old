@@ -32,7 +32,7 @@
   • Entitiy Framework Core
   • MS SQL
 
-#API Endpoints
+# API Endpoints
   • POST /api/task: Create a new task.
   • GET /api/task: Retrieve a list of all tasks.
   • GET /api/task/{id}: Retrieve details of a specific task.
