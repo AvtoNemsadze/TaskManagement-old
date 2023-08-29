@@ -2,7 +2,7 @@
   TaskManagement.API is a RESTful API that provides a flexible and efficient way to manage tasks and projects. 
   Built using ASP.NET Core and MS SQL, this API allows users to create, retrieve, update, and delete tasks while ensuring secure authentication and authorization mechanisms.
 
-#Features
+# Features
   •	Task CRUD Operations: Perform CRUD (Create, Read, Update, Delete) operations on tasks.
   •	User Authentication: Secure user authentication using JSON Web Tokens (JWT) for enhanced security.
   •	Role-Based Authorization: Implement role-based access control, ensuring only authorized users can perform certain actions. 
