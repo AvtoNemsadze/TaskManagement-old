@@ -12,6 +12,11 @@ The API supports the following roles for users: Tester, Developer, TeamLead, Pro
 •	Customizable Task Attributes: Define task attributes such as title, description, due date, and status. <br />
 •	Flexible Project Structure: The API follows a modular and organized project structure for easy maintenance and scalability.
 
+# User Registration
+  The TaskManagement.API provides a user-friendly and secure user registration process, 
+  allowing individuals to create accounts and gain access to the powerful features of the application. 
+  Overview of the registration process:
+
 # Authentication and Authorization
   The API uses JSON Web Tokens (JWT) for authentication and supports role-based authorization. 
   Users can log in, receive access and refresh tokens, and use these tokens to access protected endpoints.
