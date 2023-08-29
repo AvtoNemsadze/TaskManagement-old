@@ -50,12 +50,12 @@ This step includes: <br />
   The TaskManagement.API utilizes role-based authorization to control access to various parts of the application.
   There are two categories of roles: system roles and basic roles.
 
-  1. System Roles <br />
+ <strong>1. System Roles</strong> <br />
    • Admin Role - Admins can perform administrative tasks, manage users' roles, and have full access to all tasks. <br />
    • SuperAdmin Role - The SuperAdmin role has the highest level of access and control.
      SuperAdmins can manage system-wide settings, configurations, and perform advanced administrative tasks.
      
-  3. Basic Roles <br />
+  <strong>2. Basic Roles</strong> <br />
      • This Include: Tester, Developer, Designer, TeamLead and ProductManager Roles - These roles define the level of access and control users have within the application. 
 
 # Technologies Used
