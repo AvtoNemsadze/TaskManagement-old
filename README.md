@@ -3,9 +3,9 @@
   Built using ASP.NET Core and MS SQL, this API allows users to create, retrieve, update, and delete tasks while ensuring secure authentication and authorization mechanisms.
 
 # Features
-  •	Task CRUD Operations: Perform CRUD (Create, Read, Update, Delete) operations on tasks.
-  •	User Authentication: Secure user authentication using JSON Web Tokens (JWT) for enhanced security.
-  •	Role-Based Authorization: Implement role-based access control, ensuring only authorized users can perform certain actions. 
+  •	Task CRUD Operations: Perform CRUD (Create, Read, Update, Delete) operations on tasks. <br />
+  •	User Authentication: Secure user authentication using JSON Web Tokens (JWT) for enhanced security. <br />
+  •	Role-Based Authorization: Implement role-based access control, ensuring only authorized users can perform certain actions. <br />
     The API supports the following roles for users: Tester, Developer, TeamLead, ProductManager, Designer and system roles - Admin and SuperAdmin
   •	Refresh Token Mechanism: Implement a token refresh mechanism for a seamless user experience.
   •	Customizable Task Attributes: Define task attributes such as title, description, due date, and status.
@@ -19,28 +19,28 @@
   The TaskManagement.API utilizes role-based authorization to control access to various parts of the application.
   There are two categories of roles: system roles and basic roles.
 
-  1. System Roles
+  1. System Roles <br />
    • Admin Role - Admins can perform administrative tasks, manage users' roles, and have full access to all tasks.
    • SuperAdmin Role - The SuperAdmin role has the highest level of access and control.
      SuperAdmins can manage system-wide settings, configurations, and perform advanced administrative tasks.
      
-  3. Basic Roles
+  3. Basic Roles <br />
      • This Include: Tester, Developer, Designer, TeamLead and ProductManager Roles - These roles define the level of access and control users have within the application. 
 
 # Technologies Used
-  • ASP.NET Core 7
-  • Entitiy Framework Core
+  • ASP.NET Core 7 <br />
+  • Entitiy Framework Core <br />
   • MS SQL
 
 # API Endpoints
   • POST /api/task: Create a new task. <br />
   • GET /api/task: Retrieve a list of all tasks. <br />
-  • GET /api/task/{id}: Retrieve details of a specific task.
-  • PUT /api/task/{id}: Update the details of a task.
-  • DELETE /api/task/{id}: Delete a task.
-  • POST /api/auth/register: Register a new user.
-  • POST /api/auth/login: Authenticate a user and generate access and refresh tokens.
-  • POST /api/auth/refresh-token: Generate a new access token using a valid refresh token.
+  • GET /api/task/{id}: Retrieve details of a specific task. <br />
+  • PUT /api/task/{id}: Update the details of a task. <br />
+  • DELETE /api/task/{id}: Delete a task. <br />
+  • POST /api/auth/register: Register a new user. <br />
+  • POST /api/auth/login: Authenticate a user and generate access and refresh tokens. <br />
+  • POST /api/auth/refresh-token: Generate a new access token using a valid refresh token. <br />
 
 # Get Started 
   Follow these steps to set up and run the TaskManagement.API project locally:
