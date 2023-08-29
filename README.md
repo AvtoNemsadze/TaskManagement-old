@@ -30,6 +30,18 @@ This step includes: <br />
 •	<strong>First Name and Last Name:</strong> Users enter their full names for personalized identification. <br />
 •	<strong>User Role:</strong> Users select their designated role (e.g., Tester, Developer, Team Lead, Product Manager, Designer) from the available options. This role defines their responsibilities and permissions within the application. <br />
 
+<strong>Step 3: Account Creation</strong> <br />
+  With the necessary information submitted, users proceed to create their account.
+  During this step: <br />
+  • User-provided data is validated to ensure accuracy and prevent errors. <br />
+  • Passwords are securely hashed to protect user credentials. <br />
+  • Account creation prompts users with clear instructions and validation messages. <br />
+
+ # Role-Based Access
+  The registration process ensures that each user is assigned a specific role that aligns with their responsibilities. This role         
+  determines the tasks and features users can access within the application, creating a tailored experience that enhances collaboration 
+  and productivity.
+  
 # Authentication and Authorization
   The API uses JSON Web Tokens (JWT) for authentication and supports role-based authorization. 
   Users can log in, receive access and refresh tokens, and use these tokens to access protected endpoints.
