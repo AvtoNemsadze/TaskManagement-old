@@ -6,7 +6,7 @@
 •	<strong>Task CRUD Operations:</strong> Perform CRUD (Create, Read, Update, Delete) operations on tasks. <br />
 •	<strong>User Authentication:</strong> Secure user authentication using JSON Web Tokens (JWT) for enhanced security. <br />
 •	<strong>Role-Based Authorization:</strong> Implement role-based access control, ensuring only authorized users can perform certain actions. <br />
-<strong>The API supports the following roles for users:</strong> Tester, Developer, TeamLead, ProductManager, Designer and System roles: Admin and SuperAdmin. <br />
+The API supports the following roles for users: Tester, Developer, TeamLead, ProductManager, Designer and System roles: Admin and SuperAdmin. <br />
 
 •	<strong>Refresh Token Mechanism:</strong> Implement a token refresh mechanism for a seamless user experience. <br />
 •	<strong>Customizable Task Attributes:</strong> Define task attributes such as title, description, due date, and status. <br />
