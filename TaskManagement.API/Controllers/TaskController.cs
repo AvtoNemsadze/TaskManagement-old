@@ -51,6 +51,7 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "AdminOrSuperAdminPolicy")]
         public async Task<IActionResult> GetTaskById(int id)
         {
             if (!await _taskService.TaskExsistAsync(id))
