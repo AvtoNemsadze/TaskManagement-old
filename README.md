@@ -64,14 +64,14 @@ This step includes: <br />
   • MS SQL
 
 # API Endpoints
-  <strong>Task</strong>
+  <strong>Task</strong> <br />
   • POST /api/task: Create a new task. <br />
   • GET /api/task: Retrieve a list of all tasks. <br />
   • GET /api/task/{id}: Retrieve details of a specific task. <br />
   • PUT /api/task/{id}: Update the details of a task. <br />
   • DELETE /api/task/{id}: Delete a task. <br />
 
-  <strong>Auth</strong>
+  <strong>Auth</strong> <br />
   • POST /api/auth/register: Register a new user. <br />
   • POST /api/auth/login: Authenticate a user and generate access and refresh tokens. <br />
   • POST /api/auth/refresh-token: Generate a new access token using a valid refresh token. <br />
@@ -79,7 +79,7 @@ This step includes: <br />
   • Post /api/auth/make-admin
   • Post /api/auth/make-super-admin
 
-  <strong>User</strong>
+  <strong>User</strong> <br />
   • GET /api/user: Retrieve a list of all users. <br />
   • GET /api/user/{id}: Retrieve details of a specific user. <br />
   • DELETE /api/user/{id}: Delete a user. <br />
