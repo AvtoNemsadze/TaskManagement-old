@@ -11,5 +11,6 @@ namespace TaskManagement.API.Core.Interface
         Task<AuthServiceResponseDto> LoginAsync(LoginDto loginDto);
         Task<AuthServiceResponseDto> MakeAdminAsync(UpdatePermissionDto updatePermissionDto);
         Task<AuthServiceResponseDto> MakeSuperAdminAsync(UpdatePermissionDto updatePermissionDto);
+        //Task<AuthServiceResponseDto> RefreshTokenAsync(RefreshTokenRequestDto requestDto);
     }
 }
