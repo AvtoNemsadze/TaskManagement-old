@@ -75,8 +75,8 @@ This step includes: <br />
   • POST /api/auth/register: Register a new user. <br />
   • POST /api/auth/login: Authenticate a user and generate access and refresh tokens. <br />
   • POST /api/auth/refresh-token: Generate a new access token using a valid refresh token. <br />
-  • Post /api/auth/seed-roles
-  • Post /api/auth/make-admin
+  • Post /api/auth/seed-roles  <br />
+  • Post /api/auth/make-admin  <br />
   • Post /api/auth/make-super-admin
 
   <strong>User</strong> <br />
