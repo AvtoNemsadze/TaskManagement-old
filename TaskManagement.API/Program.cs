@@ -13,16 +13,16 @@ using TaskManagement.API.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Config Identity
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    options.Password.RequiredLength = 3;
-    options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.SignIn.RequireConfirmedEmail = false;
-});
+//// Config Identity
+//builder.Services.Configure<IdentityOptions>(options =>
+//{
+//    options.Password.RequiredLength = 3;
+//    options.Password.RequireDigit = false;
+//    options.Password.RequireLowercase = false;
+//    options.Password.RequireUppercase = false;
+//    options.Password.RequireNonAlphanumeric = false;
+//    options.SignIn.RequireConfirmedEmail = false;
+//});
 
 
 // Add Authentication and JwtBearer

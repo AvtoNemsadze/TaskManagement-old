@@ -14,5 +14,6 @@ namespace TaskManagement.API.Core.DbContexts
         public DbSet<ApplicationUser> Users { get; set; } 
         public DbSet<RoleEntity> Roles { get; set; } 
         public DbSet<UserRoleEntity> UserRoles { get; set; }
+        //public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }

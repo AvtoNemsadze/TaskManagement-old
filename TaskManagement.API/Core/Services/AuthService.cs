@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper.Execution;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -67,6 +68,7 @@ namespace TaskManagement.API.Core.Services
             {
                 IsSucceed = true,
                 Message = accessToken,
+                RefreshToken = refreshToken
             };
         }
 
@@ -92,6 +94,7 @@ namespace TaskManagement.API.Core.Services
             return (accessToken, refreshToken);
         }
 
+
         private static string GenerateJsonWebToken(IEnumerable<Claim> claims, SymmetricSecurityKey key, string issuer, string audience, TimeSpan expiration)
         {
             var tokenObject = new JwtSecurityToken(
@@ -105,6 +108,27 @@ namespace TaskManagement.API.Core.Services
             return new JwtSecurityTokenHandler().WriteToken(tokenObject);
         }
         #endregion
+
+
+
+        //private static string GenerateRefreshToken(int userId)
+        //{
+        //    var refreshToken = Guid.NewGuid().ToString(); // Generate a new refresh token
+
+        //    var refreshTokenEntity = new RefreshToken
+        //    {
+        //        UserId = userId,
+        //        Token = refreshToken,
+        //        ExpirationDate = DateTime.UtcNow.Add(TimeSpan.FromDays(7)) // Set the expiration for 7 days
+
+        //    };
+
+        //    // Save the refresh token entity in the database
+        //    //_context.RefreshTokens.Add(refreshTokenEntity);
+        //    //_context.SaveChanges();
+
+        //    return refreshToken;
+        //}
 
         #region RegisterAsync
         public async Task<AuthServiceResponseDto> RegisterAsync(RegisterDto registerDto)
