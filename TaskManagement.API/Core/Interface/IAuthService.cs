@@ -1,4 +1,5 @@
-﻿using TaskManagement.API.Core.Dtos;
+﻿using Microsoft.AspNetCore.Identity;
+using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Entities;
 
 namespace TaskManagement.API.Core.Interface
@@ -10,5 +11,6 @@ namespace TaskManagement.API.Core.Interface
         Task<AuthServiceResponseDto> LoginAsync(LoginDto loginDto);
         Task<AuthServiceResponseDto> MakeAdminAsync(UpdatePermissionDto updatePermissionDto);
         Task<AuthServiceResponseDto> MakeSuperAdminAsync(UpdatePermissionDto updatePermissionDto);
+        //Task<AuthServiceResponseDto> RefreshTokenAsync(RefreshTokenRequestDto requestDto);
     }
 }

@@ -5,7 +5,7 @@ namespace TaskManagement.API.Core.Interface
     public interface IUserService
     {
         Task<List<UserDto>> GetAllUsersAsync();
-        Task<UserDto> GetUserByIdAsync(string userId);
-        Task<AuthServiceResponseDto> DeleteUserByIdAsync(string userId);
+        Task<UserDto> GetUserByIdAsync(int userId);
+        Task<AuthServiceResponseDto> DeleteUserByIdAsync(int userId);
     }
 }

@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Entities;
 using TaskManagement.API.Core.Interface;
+using TaskManagement.API.Core.OtherObjects;
 using TaskManagement.API.Core.Services;
 
 namespace TaskManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TaskController : ControllerBase
     {
         private readonly ITaskService _taskService;
@@ -18,8 +21,8 @@ namespace TaskManagement.API.Controllers
             _taskService = taskService ?? throw new ArgumentNullException(nameof(taskService));
         }
 
-
         [HttpPost]
+        [Authorize(Policy = "AdminOrSuperAdminPolicy")]
         public async Task<IActionResult> CreateTask([FromBody] TaskEntity task)
         {
             try
@@ -48,6 +51,7 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "AdminOrSuperAdminPolicy")]
         public async Task<IActionResult> GetTaskById(int id)
         {
             if (!await _taskService.TaskExsistAsync(id))
@@ -82,6 +86,7 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpDelete("{taskId}")]
+        [Authorize(Policy = "AdminOrSuperAdminPolicy")]
         public async Task<ActionResult> DeleteTask(int taskId)
         {
             if (!await _taskService.TaskExsistAsync(taskId))

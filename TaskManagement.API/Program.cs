@@ -7,29 +7,22 @@ using System.Text;
 using TaskManagement.API.Core.DbContexts;
 using TaskManagement.API.Core.Entities;
 using TaskManagement.API.Core.Interface;
+using TaskManagement.API.Core.OtherObjects;
 using TaskManagement.API.Core.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-// auth config
-builder.Services
-    .AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
-
-// Config Identity
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    options.Password.RequiredLength = 3;
-    options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.SignIn.RequireConfirmedEmail = false;
-});
+//// Config Identity
+//builder.Services.Configure<IdentityOptions>(options =>
+//{
+//    options.Password.RequiredLength = 3;
+//    options.Password.RequireDigit = false;
+//    options.Password.RequireLowercase = false;
+//    options.Password.RequireUppercase = false;
+//    options.Password.RequireNonAlphanumeric = false;
+//    options.SignIn.RequireConfirmedEmail = false;
+//});
 
 
 // Add Authentication and JwtBearer
@@ -67,6 +60,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("local"));
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOrSuperAdminPolicy", policy =>
+    {
+        policy.RequireRole(SystemRoles.ADMIN, SystemRoles.SUPERADMIN);
+    });
+});
+
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -86,13 +87,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    var dbInitializer = services.GetRequiredService<DbInitializer>();
-//    dbInitializer.SeedData(); 
-//}
-
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -105,4 +99,5 @@ using (var scope = app.Services.CreateScope())
     // Seed Data
     dbInitializer.SeedData();
 }
+
 app.Run();

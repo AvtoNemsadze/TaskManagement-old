@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using TaskManagement.API.Core.Dtos;
+using TaskManagement.API.Core.Entities;
 using TaskManagement.API.Core.Interface;
 using TaskManagement.API.Core.OtherObjects;
 using TaskManagement.API.Core.Services;
@@ -28,7 +31,6 @@ namespace TaskManagement.API.Controllers
             return Ok(seedRoles);
         }
 
-        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
@@ -40,10 +42,14 @@ namespace TaskManagement.API.Controllers
             return BadRequest(registerResult);
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var loginResult = await _authService.LoginAsync(loginDto);
 
             if (loginResult.IsSucceed)
@@ -52,9 +58,51 @@ namespace TaskManagement.API.Controllers
             return BadRequest(loginResult);
         }
 
-       
-        // Route -> make user -> ADMIN
 
+
+
+
+
+
+        //[HttpPost("refresh-token")]
+        //public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDto requestDto)
+        //{
+        //    // Validate and retrieve the refresh token from the database
+        //    var refreshToken = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == requestDto.RefreshToken);
+
+        //    if (refreshToken == null || refreshToken.ExpirationDate < DateTime.Now)
+        //    {
+        //        return Unauthorized(); // Invalid or expired refresh token
+        //    }
+
+        //    // Retrieve the user details
+        //    var user = await _context.Users.FindAsync(refreshToken.UserId);
+
+        //    // Generate new access token
+        //    var authClaims = new List<Claim>
+        //    {
+        //        new Claim(ClaimTypes.Name, user.UserName),
+        //        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        //        new Claim("JWTID", Guid.NewGuid().ToString()),
+        //        // Add other claims
+        //    };
+
+        //    var newAccessToken = GenerateJsonWebToken(authClaims, authSecret, _configuration["JWT:ValidIssuer"], _configuration["JWT:ValidAudience"], TimeSpan.FromHours(1));
+
+        //    return Ok(new
+        //    {
+        //        AccessToken = newAccessToken
+        //    });
+        //}
+
+
+
+
+
+
+
+
+        // Route -> make user -> ADMIN
         [HttpPost("make-admin")]
         public async Task<IActionResult> MakeAdmin([FromBody] UpdatePermissionDto updatePermissionDto)
         {
@@ -66,7 +114,6 @@ namespace TaskManagement.API.Controllers
         }
 
         // Route -> make user -> SUPERADMIN
-
         [HttpPost("make-super-admin")]
         public async Task<IActionResult> SuperAdminAction([FromBody] UpdatePermissionDto updatePermissionDto)
         {

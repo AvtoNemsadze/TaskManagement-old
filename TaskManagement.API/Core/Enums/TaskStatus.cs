@@ -1,4 +1,4 @@
-﻿namespace TaskManagement.API.Core.Entities
+﻿namespace TaskManagement.API.Core.Enums
 {
     public enum TaskStatus
     {
