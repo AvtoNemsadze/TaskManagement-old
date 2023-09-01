@@ -79,6 +79,10 @@ This step includes: <br />
   • Post /api/auth/make-admin  <br />
   • Post /api/auth/make-super-admin
 
+ <strong>Token</strong> <br />
+  • POST /api/Token/refresh-token: Generate a new access token using a valid refresh token.<br />
+  • POST /api/Token/revoke-token: Revoke a refresh token (when user logs out).
+
   <strong>User</strong> <br />
   • GET /api/user: Retrieve a list of all users. <br />
   • GET /api/user/{id}: Retrieve details of a specific user. <br />
