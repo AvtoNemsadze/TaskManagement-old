@@ -13,18 +13,6 @@ using TaskManagement.API.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//// Config Identity
-//builder.Services.Configure<IdentityOptions>(options =>
-//{
-//    options.Password.RequiredLength = 3;
-//    options.Password.RequireDigit = false;
-//    options.Password.RequireLowercase = false;
-//    options.Password.RequireUppercase = false;
-//    options.Password.RequireNonAlphanumeric = false;
-//    options.SignIn.RequireConfirmedEmail = false;
-//});
-
-
 // Add Authentication and JwtBearer
 builder.Services
     .AddAuthentication(options =>
@@ -43,6 +31,7 @@ builder.Services
             ValidateAudience = true,
             ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
             ValidAudience = builder.Configuration["JWT:ValidAudience"],
+            ValidateLifetime = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
         };
     });
@@ -71,6 +60,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<DbInitializer>();
 
 var app = builder.Build();

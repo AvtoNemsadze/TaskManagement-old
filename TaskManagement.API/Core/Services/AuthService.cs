@@ -1,15 +1,9 @@
-﻿using AutoMapper.Execution;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
 using TaskManagement.API.Core.DbContexts;
 using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Entities;
-using TaskManagement.API.Core.Enums;
 using TaskManagement.API.Core.Interface;
 using TaskManagement.API.Core.OtherObjects;
 
@@ -19,10 +13,13 @@ namespace TaskManagement.API.Core.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
-        public AuthService(ApplicationDbContext context, IConfiguration configuration)
+        private readonly ITokenService _tokenService;
+
+        public AuthService(ApplicationDbContext context, IConfiguration configuration, ITokenService tokenService)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration)); ;
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration)); 
+            _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
         }
 
         #region SeedRolesAsync
@@ -62,7 +59,33 @@ namespace TaskManagement.API.Core.Services
              .Join(_context.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r.RoleName)
              .ToListAsync();
 
-            var (accessToken, refreshToken) = GenerateTokens(user.Id, userRoles, user.UserName);
+            var authClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("JWTID", Guid.NewGuid().ToString()),
+                new Claim("FirstName", user.FirstName),
+                new Claim("LastName", user.LastName),
+            };
+
+            foreach (var role in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var accessToken = _tokenService.GenerateAccessToken(authClaims);
+
+            var refreshToken = _tokenService.GenerateRefreshToken(authClaims);
+
+            // save refreshToken to db
+            RefreshToken refreshTokenObject = new RefreshToken()
+            {
+                UserId = user.Id,
+                Token = refreshToken,
+                ExpirationDate = DateTime.Now.AddMinutes(2),
+            };
+            _context.RefreshTokens.Add(refreshTokenObject);
+            _context.SaveChanges();
 
             return new AuthServiceResponseDto()
             {
@@ -71,64 +94,7 @@ namespace TaskManagement.API.Core.Services
                 RefreshToken = refreshToken
             };
         }
-
-        public (string accessToken, string refreshToken) GenerateTokens(int userId, List<string> userRoles, string userName)
-        {
-            var authClaims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Name, userName),
-                new Claim("JWTID", Guid.NewGuid().ToString())
-            };
-
-            foreach (var role in userRoles)
-            {
-                authClaims.Add(new Claim(ClaimTypes.Role, role));
-            }
-
-            var authSecret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-
-            var accessToken = GenerateJsonWebToken(authClaims, authSecret, _configuration["JWT:ValidIssuer"], _configuration["JWT:ValidAudience"], TimeSpan.FromHours(1));
-            var refreshToken = GenerateJsonWebToken(authClaims, authSecret, _configuration["JWT:ValidIssuer"], _configuration["JWT:ValidAudience"], TimeSpan.FromDays(7));
-
-            return (accessToken, refreshToken);
-        }
-
-
-        private static string GenerateJsonWebToken(IEnumerable<Claim> claims, SymmetricSecurityKey key, string issuer, string audience, TimeSpan expiration)
-        {
-            var tokenObject = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
-                expires: DateTime.UtcNow.Add(expiration),
-                claims: claims,
-                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(tokenObject);
-        }
         #endregion
-
-
-
-        //private static string GenerateRefreshToken(int userId)
-        //{
-        //    var refreshToken = Guid.NewGuid().ToString(); // Generate a new refresh token
-
-        //    var refreshTokenEntity = new RefreshToken
-        //    {
-        //        UserId = userId,
-        //        Token = refreshToken,
-        //        ExpirationDate = DateTime.UtcNow.Add(TimeSpan.FromDays(7)) // Set the expiration for 7 days
-
-        //    };
-
-        //    // Save the refresh token entity in the database
-        //    //_context.RefreshTokens.Add(refreshTokenEntity);
-        //    //_context.SaveChanges();
-
-        //    return refreshToken;
-        //}
 
         #region RegisterAsync
         public async Task<AuthServiceResponseDto> RegisterAsync(RegisterDto registerDto)
