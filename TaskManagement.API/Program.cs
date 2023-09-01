@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TaskManagement.API.Core.DbContexts;
-using TaskManagement.API.Core.Entities;
 using TaskManagement.API.Core.Interface;
 using TaskManagement.API.Core.OtherObjects;
 using TaskManagement.API.Core.Services;
