@@ -10,7 +10,9 @@ The API supports the following roles for users: Tester, Developer, TeamLead, Pro
 
 •	<strong>Refresh Token Mechanism:</strong> Implement a token refresh mechanism for a seamless user experience. <br />
 •	<strong>Customizable Task Attributes:</strong> Define task attributes such as title, description, due date, and status. <br />
-•	<strong>Flexible Project Structure:</strong> The API follows a modular and organized project structure for easy maintenance and scalability.
+•	<strong>Flexible Project Structure:</strong> The API follows a modular and organized project structure for easy maintenance and scalability. <br />
+•	<strong>Update User Information:</strong> Allow users to update their personal information, including first name, last name, username, user role etc.<br />
+•	<strong>Change Password:</strong> Enable users to change their passwords securely, including verification of the current password.
 
 # User Registration
   The TaskManagement.API provides a user-friendly and secure user registration process, 
