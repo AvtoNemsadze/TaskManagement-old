@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "YRN3lc7ETG/e/34dJ9b6BhJT8OOnrxkN8bvSpkr4TbIz6+LCa06lVbA5o31thyCHfygvfq4a8UqyZR2X0hafwQ==",
+  "dgSpecHash": "Cpk4sHFaLPqG0UXBziwZi13MG8Yq/MO/8+wscNvmcH6XOEMGtf0Rjpdum/uBEHAkkDjVm2+3pwie105ZS/cjEA==",
   "success": true,
   "projectFilePath": "C:\\Users\\PC\\Desktop\\Dev\\projects\\TaskManagement\\TaskManagement.API\\TaskManagement.API.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\PC\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\PC\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
