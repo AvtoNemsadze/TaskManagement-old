@@ -174,3 +174,4 @@ C:\Users\PC\Desktop\Dev\projects\TaskManagement\TaskManagement.API\obj\Debug\net
 C:\Users\PC\Desktop\Dev\projects\TaskManagement\TaskManagement.API\obj\Debug\net7.0\TaskManagement.API.pdb
 C:\Users\PC\Desktop\Dev\projects\TaskManagement\TaskManagement.API\obj\Debug\net7.0\TaskManagement.API.genruntimeconfig.cache
 C:\Users\PC\Desktop\Dev\projects\TaskManagement\TaskManagement.API\obj\Debug\net7.0\ref\TaskManagement.API.dll
+C:\Users\PC\Desktop\Dev\projects\TaskManagement\TaskManagement.API\bin\Debug\net7.0\BCrypt.Net-Next.dll

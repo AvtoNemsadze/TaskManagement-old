@@ -58,14 +58,14 @@ namespace TaskManagement.API.Core.Services
 
             if (refreshToken == null)
             {
-                return new TokenServiceResponse { Success = false, Message = "Token not found." };
+                return new TokenServiceResponse { IsSucceed = false, Message = "Token not found." };
             }
 
             refreshToken.Token = null;
 
             await _context.SaveChangesAsync();
 
-            return new TokenServiceResponse { Success = true, Message = "Token revoked successfully." };
+            return new TokenServiceResponse { IsSucceed = true, Message = "Token revoked successfully." };
         }
 
 
@@ -75,7 +75,7 @@ namespace TaskManagement.API.Core.Services
 
             if (refreshToken == null || refreshToken.ExpirationDate < DateTime.Now)
             {
-                return new TokenServiceResponse { Success = false, Message = "Unauthorized: Token Expired." };
+                return new TokenServiceResponse { IsSucceed = false, Message = "Unauthorized: Token Expired." };
             }
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == refreshToken.UserId);
@@ -102,7 +102,7 @@ namespace TaskManagement.API.Core.Services
 
             var newAccessToken = GenerateAccessToken(authClaims);
 
-            return new TokenServiceResponse { Success = true, Message = newAccessToken };
+            return new TokenServiceResponse { IsSucceed = true, Message = newAccessToken };
         }
     }
 
