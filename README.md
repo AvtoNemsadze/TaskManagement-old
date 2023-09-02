@@ -87,6 +87,9 @@ This step includes: <br />
   • GET /api/user: Retrieve a list of all users. <br />
   • GET /api/user/{id}: Retrieve details of a specific user. <br />
   • DELETE /api/user/{id}: Delete a user. <br />
+  • Put /api/user/Update/{userId}: Update user information. <br />
+  • Put /api/user/changePassword/{userId}: Change user password. <br />
+
 
 # Get Started 
   Follow these steps to set up and run the TaskManagement.API project locally:
