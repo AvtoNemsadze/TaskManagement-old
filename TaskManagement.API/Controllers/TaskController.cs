@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Entities;
 using TaskManagement.API.Core.Interface;
@@ -23,16 +24,21 @@ namespace TaskManagement.API.Controllers
 
         [HttpPost]
         [Authorize(Policy = "AdminOrSuperAdminPolicy")]
-        public async Task<IActionResult> CreateTask([FromBody] TaskEntity task)
+        public async Task<IActionResult> CreateTask([FromForm] TaskCreateDto task, IFormFile file)
         {
             try
             {
-                await _taskService.CreateTaskAsync(task);
+                if (file == null || file.Length == 0)
+                {
+                    return BadRequest("Please upload a file.");
+                }
+
+                await _taskService.CreateTaskAsync(task, file);
                 return Ok("Task Created Successfully");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while creating the task.");
+                return StatusCode(500, $"An error occurred while creating the task.");
             }
         }
 
@@ -63,6 +69,35 @@ namespace TaskManagement.API.Controllers
             return Ok(task);
         }
 
+
+        [HttpGet("download/{fileUrl}")]
+        public IActionResult DownloadFile(string fileUrl)
+        {
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), fileUrl);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound(); 
+            }
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+            string contentType = GetContentType(fileUrl); 
+
+            return File(fileBytes, contentType, Path.GetFileName(filePath));
+        }
+
+        private static string GetContentType(string fileName)
+        {
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(fileName, out var contentType))
+            {
+                contentType = "application/octet-stream"; 
+            }
+            return contentType;
+        }
+
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTask(int id, [FromBody] TaskUpdateDto updatedTask)
         {
@@ -87,24 +122,19 @@ namespace TaskManagement.API.Controllers
 
         [HttpDelete("{taskId}")]
         [Authorize(Policy = "AdminOrSuperAdminPolicy")]
-        public async Task<ActionResult> DeleteTask(int taskId)
+        public async Task<IActionResult> DeleteTask(int taskId)
         {
-            if (!await _taskService.TaskExsistAsync(taskId))
+            try
             {
-                return NotFound($"Task with Id '{taskId}' does not exsist");
+                await _taskService.DeleteTaskAsync(taskId);
+                return Ok("Task deleted successfully");
             }
-
-            var taskEntity = await _taskService.GetTaskByIdAsync(taskId);
-
-            if (taskEntity == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                // Handle other exceptions
+                return NotFound($"Task with id '{taskId}' Not Found");
             }
-
-            _taskService.DeleteTaskAsync(taskEntity);
-            await _taskService.SaveChangesAsync();
-
-            return Ok("Task Deleted Successfully");
         }
+
     }
 }

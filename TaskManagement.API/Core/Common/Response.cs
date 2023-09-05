@@ -1,4 +1,4 @@
-﻿namespace TaskManagement.API.Core.Dtos
+﻿namespace TaskManagement.API.Core.Common
 {
     public class Response
     {

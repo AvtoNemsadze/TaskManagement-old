@@ -3,6 +3,7 @@ using TaskManagement.API.Core.DbContexts;
 using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Interface;
 using System.Security.Cryptography;
+using TaskManagement.API.Core.Common;
 
 namespace TaskManagement.API.Core.Services
 {
@@ -31,7 +32,6 @@ namespace TaskManagement.API.Core.Services
 
             return usersWithRoles;
         }
-
 
         public async Task<UserDto?> GetUserByIdAsync(int userId)
         {

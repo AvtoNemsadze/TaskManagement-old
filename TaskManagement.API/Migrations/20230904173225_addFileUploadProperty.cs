@@ -5,25 +5,24 @@
 namespace TaskManagement.API.Migrations
 {
     /// <inheritdoc />
-    public partial class addNewfieldToRefreshTokenEntity : Migration
+    public partial class addFileUploadProperty : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "Revoked",
-                table: "RefreshTokens",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
+            migrationBuilder.AddColumn<string>(
+                name: "AttachFile",
+                table: "Tasks",
+                type: "nvarchar(max)",
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Revoked",
-                table: "RefreshTokens");
+                name: "AttachFile",
+                table: "Tasks");
         }
     }
 }
