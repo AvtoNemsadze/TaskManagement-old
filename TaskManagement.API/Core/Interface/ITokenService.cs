@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using TaskManagement.API.Core.Dtos;
+using TaskManagement.API.Core.Common;
 
 namespace TaskManagement.API.Core.Interface
 {

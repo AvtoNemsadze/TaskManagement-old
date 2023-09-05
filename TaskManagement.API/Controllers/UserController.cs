@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Interface;
 using TaskManagement.API.Core.OtherObjects;
 
@@ -51,6 +52,35 @@ namespace TaskManagement.API.Controllers
             }
 
             return Ok(response);
+        }
+
+        [HttpPut("update/{userId}")]
+        public async Task<IActionResult> UpdateUser(int userId, [FromBody] UpdateUserDto updateUserDto)
+        {
+            var response = await _userService.UpdateUserAsync(userId, updateUserDto);
+
+            if (!response.IsSucceed)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPut("changepassword/{userId}")]
+        public async Task<IActionResult> ChangePassword(int userId, string currentPassword, string newPassword)
+        {
+            var result = await _userService.ChangePasswordAsync(userId, currentPassword, newPassword);
+
+            if (result.IsSucceed)
+            {
+                return Ok(new { result.Message });
+            }
+
+            else
+            {
+                return BadRequest(new { result.Message });
+            }
         }
     }
 }

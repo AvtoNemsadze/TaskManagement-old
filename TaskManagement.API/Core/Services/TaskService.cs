@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using TaskManagement.API.Core.DbContexts;
 using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Entities;
+using TaskManagement.API.Core.Enums;
 using TaskManagement.API.Core.Interface;
 using TaskStatus = TaskManagement.API.Core.Enums.TaskStatus;
 
@@ -16,35 +19,100 @@ namespace TaskManagement.API.Core.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<TaskEntity> CreateTaskAsync(TaskEntity newTask)
+        public async Task<TaskEntity> CreateTaskAsync(TaskCreateDto taskCreateDto, IFormFile file)
         {
-            if (newTask == null)
+
+            if (taskCreateDto == null)
             {
-                throw new ArgumentNullException(nameof(newTask));
+                throw new ArgumentNullException(nameof(taskCreateDto));
             }
 
-            newTask.Status = TaskStatus.Started.ToString();
+            var taskStatus = TaskStatus.Started.ToString();
 
             // default deadline
-            if(newTask.DueDate == null)
+            if (taskCreateDto.DueDate == null)
             {
-                newTask.DueDate = DateTime.UtcNow.AddDays(7);
+                taskCreateDto.DueDate = DateTime.UtcNow.AddDays(7);
             }
+
+            // add file
+            string? fileToSave = null;
+
+            if (file != null && file.Length > 0)
+            {
+                fileToSave = await SaveFileAsync(file);
+            }
+
+            var newTask = new TaskEntity
+            {
+                Title = taskCreateDto.Title,
+                Description = taskCreateDto.Description,
+                DueDate = taskCreateDto.DueDate,
+                Status = taskStatus,
+                Priority = taskCreateDto.Priority,
+                UserId = taskCreateDto.UserId,
+                AttachFile = fileToSave,
+            };
 
             await _context.Tasks.AddAsync(newTask);
             await _context.SaveChangesAsync();
 
             return newTask;
+
         }
 
-        public async Task<IEnumerable<TaskEntity>> GetAllTasksAsync()
+        private static async Task<string> SaveFileAsync(IFormFile file)
         {
-            return await _context.Tasks.ToListAsync();
+            string baseDirectory = "Documents";
+            string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string filePath = Path.Combine(baseDirectory, uniqueFileName); 
+
+            string fullPath = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+
+            using (var stream = new FileStream(fullPath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return filePath; 
         }
 
-        public async Task<TaskEntity> GetTaskByIdAsync(int taskId)
+        public async Task<IEnumerable<TaskGetDto>> GetAllTasksAsync()
         {
-            var task = await _context.Tasks.FindAsync(taskId);
+            var tasks = await _context.Tasks
+               .Select(taskEntity => new TaskGetDto
+               {
+                   Id = taskEntity.Id,
+                   Title = taskEntity.Title,
+                   Description= taskEntity.Description,
+                   DueDate = taskEntity.DueDate,
+                   Status = taskEntity.Status,
+                   Priority = taskEntity.Priority,
+                   UserId = taskEntity.UserId,
+                   AttachFile = taskEntity.AttachFile,
+               })
+               .ToListAsync();
+
+            return tasks;
+        }
+
+        public async Task<TaskGetDto> GetTaskByIdAsync(int taskId)
+        {
+            var task = await _context.Tasks
+               .Where(t => t.Id == taskId)
+                .Select(taskEntity => new TaskGetDto
+                {
+                    Id = taskEntity.Id,
+                    Title = taskEntity.Title,
+                    Description = taskEntity.Description,
+                    DueDate = taskEntity.DueDate,
+                    Status = taskEntity.Status,
+                    Priority = taskEntity.Priority,
+                    UserId = taskEntity.UserId,
+                    AttachFile = taskEntity.AttachFile,
+                })
+               .FirstOrDefaultAsync();
+
             return task ?? throw new NullReferenceException();
         }
 
@@ -57,15 +125,18 @@ namespace TaskManagement.API.Core.Services
             existingTask.DueDate = updatedTask.DueDate;
             existingTask.Status = updatedTask.Status;
             existingTask.Priority = updatedTask.Priority;
+            existingTask.UserId = updatedTask.UserId;
 
             await _context.SaveChangesAsync();
 
             return existingTask;
         }
 
-        public void DeleteTaskAsync(TaskEntity taskEntity)
+        public async Task DeleteTaskAsync(int taskId)
         {
-            _context.Tasks.Remove(taskEntity);
+            var task = await _context.Tasks.FindAsync(taskId) ?? throw new NullReferenceException("Task not found");
+            _context.Tasks.Remove(task);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> TaskExsistAsync(int taskId)

@@ -23,8 +23,5 @@ namespace TaskManagement.API.Core.Dtos
 
         [EnumDataType(typeof(UserRoles))]
         public int RoleId { get; set; }
-
-        //[EnumDataType(typeof(UserRoles))]
-        //public string UserRole { get; set; }
     }
 }

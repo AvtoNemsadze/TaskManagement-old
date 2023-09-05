@@ -98,6 +98,7 @@ C:\Users\PC\Desktop\Dev\projects\TaskManagement\TaskManagement.API\bin\Debug\net
 C:\Users\PC\Desktop\Dev\projects\TaskManagement\TaskManagement.API\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\PC\Desktop\Dev\projects\TaskManagement\TaskManagement.API\bin\Debug\net7.0\Azure.Core.dll
 C:\Users\PC\Desktop\Dev\projects\TaskManagement\TaskManagement.API\bin\Debug\net7.0\Azure.Identity.dll
+C:\Users\PC\Desktop\Dev\projects\TaskManagement\TaskManagement.API\bin\Debug\net7.0\BCrypt.Net-Next.dll
 C:\Users\PC\Desktop\Dev\projects\TaskManagement\TaskManagement.API\bin\Debug\net7.0\Humanizer.dll
 C:\Users\PC\Desktop\Dev\projects\TaskManagement\TaskManagement.API\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\PC\Desktop\Dev\projects\TaskManagement\TaskManagement.API\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll

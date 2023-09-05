@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using TaskManagement.API.Core.Common;
 using TaskManagement.API.Core.DbContexts;
 using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Entities;
@@ -23,7 +24,7 @@ namespace TaskManagement.API.Core.Services
         }
 
         #region SeedRolesAsync
-        public async Task<AuthServiceResponseDto> SeedRolesAsync()
+        public async Task<RolesServiceResponse> SeedRolesAsync()
         {
             var existingRoles = await _context.Roles.ToListAsync();
 
@@ -36,22 +37,22 @@ namespace TaskManagement.API.Core.Services
 
             await _context.SaveChangesAsync();
 
-            return new AuthServiceResponseDto { IsSucceed = true, Message = "Roles seeded successfully." };
+            return new RolesServiceResponse { IsSucceed = true, Message = "Roles seeded successfully." };
         }
         #endregion
 
         #region LoginAsync
-        public async Task<AuthServiceResponseDto> LoginAsync(LoginDto loginDto)
+        public async Task<AuthServiceResponse> LoginAsync(LoginDto loginDto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(user => user.UserName == loginDto.UserName);
             if (user is null)
-                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid Credentials" };
+                return new AuthServiceResponse() { IsSucceed = false, Message = "Invalid Credentials" };
 
             var hashedPassword = HashPassword(loginDto.Password, Convert.FromBase64String(user.PasswordSalt));
 
             if (hashedPassword != user.PasswordHash)
             {
-                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid Credentials" };
+                return new AuthServiceResponse() { IsSucceed = false, Message = "Invalid Credentials" };
             }
 
             var userRoles = await _context.UserRoles
@@ -87,7 +88,7 @@ namespace TaskManagement.API.Core.Services
             _context.RefreshTokens.Add(refreshTokenObject);
             _context.SaveChanges();
 
-            return new AuthServiceResponseDto()
+            return new AuthServiceResponse()
             {
                 IsSucceed = true,
                 Message = accessToken,
@@ -97,12 +98,12 @@ namespace TaskManagement.API.Core.Services
         #endregion
 
         #region RegisterAsync
-        public async Task<AuthServiceResponseDto> RegisterAsync(RegisterDto registerDto)
+        public async Task<RegisterServiceResponse> RegisterAsync(RegisterDto registerDto)
         {
             var isExistUser = await _context.Users.FirstOrDefaultAsync(user => user.UserName == registerDto.UserName);
 
             if (isExistUser != null)
-                return new AuthServiceResponseDto() { IsSucceed = false, Message = "UserName Already Exsist" };
+                return new RegisterServiceResponse() { IsSucceed = false, Message = "UserName Already Exsist" };
 
             var salt = GenerateSalt();
             var hashedPassword = HashPassword(registerDto.Password, salt);
@@ -131,16 +132,16 @@ namespace TaskManagement.API.Core.Services
 
             if (await _context.SaveChangesAsync() > 0)
             {
-                return new AuthServiceResponseDto() { IsSucceed = true, Message = "User Created Successfully" };
+                return new RegisterServiceResponse() { IsSucceed = true, Message = "User Created Successfully" };
             }
             else
             {
-                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Failed to save user data." };
+                return new RegisterServiceResponse() { IsSucceed = false, Message = "Failed to save user data." };
             }
            
         }
 
-        private string HashPassword(string password, byte[] salt)
+        private static string HashPassword(string password, byte[] salt)
         {
             using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000, HashAlgorithmName.SHA256))
             {
@@ -168,20 +169,20 @@ namespace TaskManagement.API.Core.Services
         // user system roles
 
         #region MakeAdminAsync
-        public async Task<AuthServiceResponseDto> MakeAdminAsync(UpdatePermissionDto updatePermissionDto)
+        public async Task<RolesServiceResponse> MakeAdminAsync(UpdatePermissionDto updatePermissionDto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == updatePermissionDto.UserName);
 
             if (user is null)
-                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid User name !!!" };
+                return new RolesServiceResponse() { IsSucceed = false, Message = "Invalid User name !!!" };
 
             var existingRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == SystemRoles.ADMIN);
             if (existingRole == null)
-                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Admin role not found." };
+                return new RolesServiceResponse() { IsSucceed = false, Message = "Admin role not found." };
 
             var userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId);
             if (userRole == null)
-                return new AuthServiceResponseDto() { IsSucceed = false, Message = "User role not found." };
+                return new RolesServiceResponse() { IsSucceed = false, Message = "User role not found." };
 
             if (userRole.RoleName != SystemRoles.ADMIN)
             {
@@ -198,28 +199,28 @@ namespace TaskManagement.API.Core.Services
                     await _context.SaveChangesAsync();
                 }
 
-                return new AuthServiceResponseDto() { IsSucceed = true, Message = "Now user is an Admin" };
+                return new RolesServiceResponse() { IsSucceed = true, Message = "Now user is an Admin" };
             }
 
-            return new AuthServiceResponseDto() { IsSucceed = false, Message = "User is already an Admin" };
+            return new RolesServiceResponse() { IsSucceed = false, Message = "User is already an Admin" };
         }
         #endregion
 
         #region MakeSuperAdminAsync
-        public async Task<AuthServiceResponseDto> MakeSuperAdminAsync(UpdatePermissionDto updatePermissionDto)
+        public async Task<RolesServiceResponse> MakeSuperAdminAsync(UpdatePermissionDto updatePermissionDto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == updatePermissionDto.UserName);
 
             if (user is null)
-                return new AuthServiceResponseDto() { IsSucceed = false, Message = "Invalid User name !!!" };
+                return new RolesServiceResponse() { IsSucceed = false, Message = "Invalid User name !!!" };
 
             var existingRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == SystemRoles.SUPERADMIN);
             if (existingRole == null)
-                return new AuthServiceResponseDto() { IsSucceed = false, Message = "SuperAdmin role not found." };
+                return new RolesServiceResponse() { IsSucceed = false, Message = "SuperAdmin role not found." };
 
             var userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId);
             if (userRole == null)
-                return new AuthServiceResponseDto() { IsSucceed = false, Message = "User role not found." };
+                return new RolesServiceResponse() { IsSucceed = false, Message = "User role not found." };
 
             if (userRole.RoleName != SystemRoles.SUPERADMIN)
             {
@@ -236,10 +237,10 @@ namespace TaskManagement.API.Core.Services
                     await _context.SaveChangesAsync();
                 }
 
-                return new AuthServiceResponseDto() { IsSucceed = true, Message = "Now user is a SuperAdmin" };
+                return new RolesServiceResponse() { IsSucceed = true, Message = "Now user is a SuperAdmin" };
             }
 
-            return new AuthServiceResponseDto() { IsSucceed = false, Message = "User is already a SuperAdmin" };
+            return new RolesServiceResponse() { IsSucceed = false, Message = "User is already a SuperAdmin" };
         }
         #endregion
     }
