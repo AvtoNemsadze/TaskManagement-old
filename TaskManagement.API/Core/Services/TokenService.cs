@@ -4,8 +4,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using TaskManagement.API.Core.Common;
 using TaskManagement.API.Core.DbContexts;
-using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Interface;
 
 namespace TaskManagement.API.Core.Services

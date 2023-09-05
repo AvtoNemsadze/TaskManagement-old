@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Policy;
+using System.Text.Json.Serialization;
 using TaskManagement.API.Core.Enums;
 
 namespace TaskManagement.API.Core.Entities
@@ -35,6 +37,9 @@ namespace TaskManagement.API.Core.Entities
         [ForeignKey("RoleId")]
         public RoleEntity Role { get; set; }
         public int RoleId { get; set; }
+
+        [JsonIgnore]
+        public ICollection<TaskEntity>? Tasks { get; set; }
     }
 }
 

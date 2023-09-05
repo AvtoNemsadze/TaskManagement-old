@@ -46,7 +46,7 @@ namespace TaskManagement.API.Controllers
 
             var result = await _tokenService.RevokeTokenAsync(refreshTokenString);
 
-            if (result.Success)
+            if (result.IsSucceed)
             {
                 return Ok("Token revoked successfully.");
             }

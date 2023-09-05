@@ -9,7 +9,7 @@ namespace TaskManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -54,7 +54,6 @@ namespace TaskManagement.API.Controllers
             return Ok(response);
         }
 
-        // update user
         [HttpPut("update/{userId}")]
         public async Task<IActionResult> UpdateUser(int userId, [FromBody] UpdateUserDto updateUserDto)
         {
@@ -68,7 +67,6 @@ namespace TaskManagement.API.Controllers
             return Ok(response);
         }
 
-        // update user's password
         [HttpPut("changepassword/{userId}")]
         public async Task<IActionResult> ChangePassword(int userId, string currentPassword, string newPassword)
         {

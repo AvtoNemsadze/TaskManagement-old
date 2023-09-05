@@ -1,13 +1,26 @@
-﻿//using TaskManagement.API.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using TaskManagement.API.Core.Enums;
 
-//namespace TaskManagement.API.Core.Dtos
-//{
-//    public class TaskCreateDto
-//    {
-//        public string Title { get; set; }
-//        public string Description { get; set; }
-//        public DateTime DueDate { get; set; }
-//        public Entities.TaskStatus Status { get; set; }
-//        public TaskPriority Priority { get; set; }
-//    }
-//}
+namespace TaskManagement.API.Core.Dtos
+{
+    public class TaskCreateDto
+    {
+        [Required]
+        [MaxLength(100)]
+        public string? Title { get; set; }
+
+        [MaxLength(500)]
+        public string? Description { get; set; }
+
+        public DateTime? DueDate { get; set; }
+
+        [EnumDataType(typeof(Enums.TaskStatus))]
+        [MaxLength(50)]
+        public string Status { get; set; }
+
+        [EnumDataType(typeof(TaskPriority))]
+        public string Priority { get; set; }
+        public int UserId { get; set; }
+    }
+}
