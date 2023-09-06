@@ -65,7 +65,7 @@ This step includes: <br />
   • Entitiy Framework Core <br />
   • MS SQL
 
-<strong>API Endpoints</strong>
+ # API Endpoints
   <strong>Task</strong> <br />
   • POST /api/task: Create a new task. <br />
   • GET /api/task: Retrieve a list of all tasks. <br />
@@ -81,7 +81,7 @@ This step includes: <br />
   • Post /api/auth/make-admin  <br />
   • Post /api/auth/make-super-admin <br />
 
-  <strong>Comments</strong>
+  <strong>Comments</strong> <br />
   • POST /api/comment: Create a new comment. <br />
   • GET /api/comment: Retrieve a list of all comments. <br />
   • GET /api/comment/{commentId}: Retrieve details of a specific comment. <br />
