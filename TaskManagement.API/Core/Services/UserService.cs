@@ -66,6 +66,11 @@ namespace TaskManagement.API.Core.Services
                 return new UserServiceResponse() { IsSucceed = false, Message = "User not found." };
             }
 
+            // Find all comments associated with the user and delete it
+            var userComments = _context.Comments.Where(c => c.UserId == userId);
+            _context.Comments.RemoveRange(userComments);
+
+
             _context.Users.Remove(userToDelete);
             await _context.SaveChangesAsync();
 

@@ -10,7 +10,7 @@ namespace TaskManagement.API.Core.Interface
         Task<IEnumerable<TaskGetDto>> GetAllTasksAsync();
         Task<TaskEntity> CreateTaskAsync(TaskCreateDto taskCreateDto, IFormFile file);
         Task<TaskEntity> UpdateTaskAsync(int id, TaskUpdateDto updatedTask);
-        public Task DeleteTaskAsync(int taskId);
+        Task DeleteTaskAsync(int taskId);
         Task<bool> TaskExsistAsync(int taskId);
         Task<bool> SaveChangesAsync();
     }
