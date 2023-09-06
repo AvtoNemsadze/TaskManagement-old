@@ -79,7 +79,14 @@ This step includes: <br />
   • POST /api/auth/refresh-token: Generate a new access token using a valid refresh token. <br />
   • Post /api/auth/seed-roles  <br />
   • Post /api/auth/make-admin  <br />
-  • Post /api/auth/make-super-admin
+  • Post /api/auth/make-super-admin <br />
+
+  ## Comments
+  • POST /api/comment: Create a new comment. <br />
+  • GET /api/comment: Retrieve a list of all comments. <br />
+  • GET /api/comment/{id}: Retrieve details of a specific comment. <br />
+  • PUT /api/comment/{id}: Update the details of a comment. <br />
+  • DELETE /api/comment/{id}: Delete a comment. <br />
 
  <strong>Token</strong> <br />
   • POST /api/Token/refresh-token: Generate a new access token using a valid refresh token.<br />
