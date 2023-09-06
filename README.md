@@ -65,7 +65,7 @@ This step includes: <br />
   • Entitiy Framework Core <br />
   • MS SQL
 
-# API Endpoints
+<strong>API Endpoints</strong>
   <strong>Task</strong> <br />
   • POST /api/task: Create a new task. <br />
   • GET /api/task: Retrieve a list of all tasks. <br />
@@ -84,9 +84,9 @@ This step includes: <br />
   ## Comments
   • POST /api/comment: Create a new comment. <br />
   • GET /api/comment: Retrieve a list of all comments. <br />
-  • GET /api/comment/{id}: Retrieve details of a specific comment. <br />
-  • PUT /api/comment/{id}: Update the details of a comment. <br />
-  • DELETE /api/comment/{id}: Delete a comment. <br />
+  • GET /api/comment/{commentId}: Retrieve details of a specific comment. <br />
+  • PUT /api/comment/{commentId}: Update the details of a comment. <br />
+  • DELETE /api/comment/{commentId}: Delete a comment. <br />
 
  <strong>Token</strong> <br />
   • POST /api/Token/refresh-token: Generate a new access token using a valid refresh token.<br />
