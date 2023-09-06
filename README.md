@@ -81,7 +81,7 @@ This step includes: <br />
   • Post /api/auth/make-admin  <br />
   • Post /api/auth/make-super-admin <br />
 
-  ## Comments
+  <strong>Comments</strong>
   • POST /api/comment: Create a new comment. <br />
   • GET /api/comment: Retrieve a list of all comments. <br />
   • GET /api/comment/{commentId}: Retrieve details of a specific comment. <br />
