@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Policy;
@@ -7,6 +8,7 @@ using TaskManagement.API.Core.Enums;
 
 namespace TaskManagement.API.Core.Entities
 {
+    [Index(nameof(Email), IsUnique = true)]
     public class ApplicationUser
     {
         [Required]
@@ -40,6 +42,9 @@ namespace TaskManagement.API.Core.Entities
 
         [JsonIgnore]
         public ICollection<TaskEntity>? Tasks { get; set; }
+
+        [JsonIgnore]
+        public ICollection<CommentEntity>? Comments { get; set; } = new List<CommentEntity>();
     }
 }
 

@@ -19,7 +19,7 @@ namespace TaskManagement.API.Core.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<TaskEntity> CreateTaskAsync(TaskCreateDto taskCreateDto, IFormFile file)
+        public async Task<TaskEntity> CreateTaskAsync(TaskCreateDto taskCreateDto, IFormFile? file)
         {
 
             if (taskCreateDto == null)
@@ -51,7 +51,7 @@ namespace TaskManagement.API.Core.Services
                 Status = taskStatus,
                 Priority = taskCreateDto.Priority,
                 UserId = taskCreateDto.UserId,
-                AttachFile = fileToSave,
+                AttachFile = fileToSave ?? null,
             };
 
             await _context.Tasks.AddAsync(newTask);
@@ -61,10 +61,10 @@ namespace TaskManagement.API.Core.Services
 
         }
 
-        private static async Task<string> SaveFileAsync(IFormFile file)
+        private static async Task<string> SaveFileAsync(IFormFile? file)
         {
             string baseDirectory = "Documents";
-            string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file?.FileName);
             string filePath = Path.Combine(baseDirectory, uniqueFileName); 
 
             string fullPath = Path.Combine(Directory.GetCurrentDirectory(), filePath);
@@ -135,10 +135,17 @@ namespace TaskManagement.API.Core.Services
         public async Task DeleteTaskAsync(int taskId)
         {
             var task = await _context.Tasks.FindAsync(taskId) ?? throw new NullReferenceException("Task not found");
+
+            // Find all comments associated with the task then Remove the comments
+            var taskComments = _context.Comments.Where(c => c.TaskId == taskId);
+            _context.Comments.RemoveRange(taskComments);
+
+
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();
         }
 
+      
         public async Task<bool> TaskExsistAsync(int taskId)
         {
             return await _context.Tasks.AnyAsync(c => c.Id == taskId);

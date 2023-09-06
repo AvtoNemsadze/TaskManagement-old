@@ -25,4 +25,8 @@
     public class RolesServiceResponse : Response
     {
     }
+
+    public class CommentServiceResponse : Response
+    {
+    }
 }

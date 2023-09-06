@@ -35,7 +35,7 @@ namespace TaskManagement.API.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -65,9 +65,43 @@ namespace TaskManagement.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("TaskManagement.API.Core.Entities.CommentEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TaskId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.RefreshToken", b =>
@@ -185,6 +219,23 @@ namespace TaskManagement.API.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("TaskManagement.API.Core.Entities.CommentEntity", b =>
+                {
+                    b.HasOne("TaskManagement.API.Core.Entities.TaskEntity", "Task")
+                        .WithMany("Comments")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("TaskManagement.API.Core.Entities.ApplicationUser", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Task");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TaskManagement.API.Core.Entities.TaskEntity", b =>
                 {
                     b.HasOne("TaskManagement.API.Core.Entities.ApplicationUser", "User")
@@ -198,12 +249,19 @@ namespace TaskManagement.API.Migrations
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.RoleEntity", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("TaskManagement.API.Core.Entities.TaskEntity", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

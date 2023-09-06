@@ -9,8 +9,9 @@
 The API supports the following roles for users: Tester, Developer, TeamLead, ProductManager, Designer and System roles: Admin and SuperAdmin. <br />
 
 •	<strong>Refresh Token Mechanism:</strong> Implement a token refresh mechanism for a seamless user experience. <br />
+•	<strong>Comment Functionality:</strong> Allow users to create, update, and delete comments associated with tasks. <br />
 •	<strong>Customizable Task Attributes:</strong> Define task attributes such as title, description, due date, and status. <br />
-•	<strong>Flexible Project Structure:</strong> The API follows a modular and organized project structure for easy maintenance and scalability. <br />
+•	<strong>Task Attachments: </strong> Attach files or documents to tasks, providing additional context or resources. <br />
 •	<strong>Update User Information:</strong> Allow users to update their personal information, including first name, last name, username, user role etc.<br />
 •	<strong>Change Password:</strong> Enable users to change their passwords securely, including verification of the current password.
 
@@ -65,21 +66,14 @@ This step includes: <br />
   • Entitiy Framework Core <br />
   • MS SQL
 
-# API Endpoints
-  <strong>Task</strong> <br />
-  • POST /api/task: Create a new task. <br />
-  • GET /api/task: Retrieve a list of all tasks. <br />
-  • GET /api/task/{id}: Retrieve details of a specific task. <br />
-  • PUT /api/task/{id}: Update the details of a task. <br />
-  • DELETE /api/task/{id}: Delete a task. <br />
-
+ # API Endpoints
   <strong>Auth</strong> <br />
   • POST /api/auth/register: Register a new user. <br />
   • POST /api/auth/login: Authenticate a user and generate access and refresh tokens. <br />
   • POST /api/auth/refresh-token: Generate a new access token using a valid refresh token. <br />
   • Post /api/auth/seed-roles  <br />
   • Post /api/auth/make-admin  <br />
-  • Post /api/auth/make-super-admin
+  • Post /api/auth/make-super-admin <br />
 
  <strong>Token</strong> <br />
   • POST /api/Token/refresh-token: Generate a new access token using a valid refresh token.<br />
@@ -91,7 +85,20 @@ This step includes: <br />
   • DELETE /api/user/{id}: Delete a user. <br />
   • Put /api/user/Update/{userId}: Update user information. <br />
   • Put /api/user/changePassword/{userId}: Change user password. <br />
+  
+   <strong>Task</strong> <br />
+  • POST /api/task: Create a new task. <br />
+  • GET /api/task: Retrieve a list of all tasks. <br />
+  • GET /api/task/{id}: Retrieve details of a specific task. <br />
+  • PUT /api/task/{id}: Update the details of a task. <br />
+  • DELETE /api/task/{id}: Delete a task. <br />
 
+  <strong>Comments</strong> <br />
+  • POST /api/comment: Create a new comment. <br />
+  • GET /api/comment: Retrieve a list of all comments. <br />
+  • GET /api/comment/{commentId}: Retrieve details of a specific comment. <br />
+  • PUT /api/comment/{commentId}: Update the details of a comment. <br />
+  • DELETE /api/comment/{commentId}: Delete a comment. <br />
 
 # Get Started 
   Follow these steps to set up and run the TaskManagement.API project locally:
