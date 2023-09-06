@@ -32,7 +32,13 @@ namespace TaskManagement.API.Core.Entities
         [ForeignKey("UserId")]
         [JsonIgnore]
         public ApplicationUser? User { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
+
+        // Define a foreign key to link a task with a team (nullable)
+        [ForeignKey("TeamId")]
+        [JsonIgnore]
+        public Team? Team { get; set; }
+        public int? TeamId { get; set; }
 
         public string? AttachFile { get; set; }
 
