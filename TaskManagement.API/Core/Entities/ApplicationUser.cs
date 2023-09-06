@@ -8,6 +8,7 @@ using TaskManagement.API.Core.Enums;
 
 namespace TaskManagement.API.Core.Entities
 {
+    [Index(nameof(Email), IsUnique = true)]
     public class ApplicationUser
     {
         [Required]

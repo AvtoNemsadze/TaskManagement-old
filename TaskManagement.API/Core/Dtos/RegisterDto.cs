@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using TaskManagement.API.Core.Entities;
 using TaskManagement.API.Core.Enums;
 
