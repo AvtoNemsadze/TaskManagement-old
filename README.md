@@ -67,13 +67,6 @@ This step includes: <br />
   • MS SQL
 
  # API Endpoints
-  <strong>Task</strong> <br />
-  • POST /api/task: Create a new task. <br />
-  • GET /api/task: Retrieve a list of all tasks. <br />
-  • GET /api/task/{id}: Retrieve details of a specific task. <br />
-  • PUT /api/task/{id}: Update the details of a task. <br />
-  • DELETE /api/task/{id}: Delete a task. <br />
-
   <strong>Auth</strong> <br />
   • POST /api/auth/register: Register a new user. <br />
   • POST /api/auth/login: Authenticate a user and generate access and refresh tokens. <br />
@@ -81,6 +74,13 @@ This step includes: <br />
   • Post /api/auth/seed-roles  <br />
   • Post /api/auth/make-admin  <br />
   • Post /api/auth/make-super-admin <br />
+
+   <strong>Task</strong> <br />
+  • POST /api/task: Create a new task. <br />
+  • GET /api/task: Retrieve a list of all tasks. <br />
+  • GET /api/task/{id}: Retrieve details of a specific task. <br />
+  • PUT /api/task/{id}: Update the details of a task. <br />
+  • DELETE /api/task/{id}: Delete a task. <br />
 
   <strong>Comments</strong> <br />
   • POST /api/comment: Create a new comment. <br />
