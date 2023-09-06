@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -34,5 +35,8 @@ namespace TaskManagement.API.Core.Entities
         public int UserId { get; set; }
 
         public string? AttachFile { get; set; }
+
+        [JsonIgnore]
+        public ICollection<CommentEntity>? Comments { get; set; } = new List<CommentEntity>();
     }
 }

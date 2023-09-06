@@ -69,7 +69,9 @@ builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<DbInitializer>();
+builder.Services.AddScoped<ICommentService, CommentService>();
+
+builder.Services.AddScoped<TaskSeedData>();
 
 var app = builder.Build();
 
@@ -88,13 +90,13 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var dbInitializer = services.GetRequiredService<DbInitializer>();
-    var authService = services.GetRequiredService<IAuthService>(); // Get your IAuthService instance
+    var dbInitializer = services.GetRequiredService<TaskSeedData>();
+    var authService = services.GetRequiredService<IAuthService>();
 
     // Seed Roles
-    authService.SeedRolesAsync().Wait(); // Wait for it to complete before proceeding
+    authService.SeedRolesAsync().Wait();
 
-    // Seed Data
+    // Seed Task Data
     dbInitializer.SeedData();
 }
 

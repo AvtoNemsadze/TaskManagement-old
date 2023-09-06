@@ -16,23 +16,18 @@ namespace TaskManagement.API.Controllers
     public class TaskController : ControllerBase
     {
         private readonly ITaskService _taskService;
-
         public TaskController(ITaskService taskService)
         {
             _taskService = taskService ?? throw new ArgumentNullException(nameof(taskService));
         }
 
+
         [HttpPost]
         [Authorize(Policy = "AdminOrSuperAdminPolicy")]
-        public async Task<IActionResult> CreateTask([FromForm] TaskCreateDto task, IFormFile file)
+        public async Task<IActionResult> CreateTask([FromForm] TaskCreateDto task, IFormFile? file)
         {
             try
             {
-                if (file == null || file.Length == 0)
-                {
-                    return BadRequest("Please upload a file.");
-                }
-
                 await _taskService.CreateTaskAsync(task, file);
                 return Ok("Task Created Successfully");
             }
