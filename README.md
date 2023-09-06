@@ -9,6 +9,7 @@
 The API supports the following roles for users: Tester, Developer, TeamLead, ProductManager, Designer and System roles: Admin and SuperAdmin. <br />
 
 •	<strong>Refresh Token Mechanism:</strong> Implement a token refresh mechanism for a seamless user experience. <br />
+•	<strong>Comment Functionality:</strong> Allow users to create, update, and delete comments associated with tasks.
 •	<strong>Customizable Task Attributes:</strong> Define task attributes such as title, description, due date, and status. <br />
 •	<strong>Flexible Project Structure:</strong> The API follows a modular and organized project structure for easy maintenance and scalability. <br />
 •	<strong>Update User Information:</strong> Allow users to update their personal information, including first name, last name, username, user role etc.<br />
