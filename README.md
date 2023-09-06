@@ -75,6 +75,17 @@ This step includes: <br />
   • Post /api/auth/make-admin  <br />
   • Post /api/auth/make-super-admin <br />
 
+ <strong>Token</strong> <br />
+  • POST /api/Token/refresh-token: Generate a new access token using a valid refresh token.<br />
+  • POST /api/Token/revoke-token: Revoke a refresh token (when user logs out).
+
+  <strong>User</strong> <br />
+  • GET /api/user: Retrieve a list of all users. <br />
+  • GET /api/user/{id}: Retrieve details of a specific user. <br />
+  • DELETE /api/user/{id}: Delete a user. <br />
+  • Put /api/user/Update/{userId}: Update user information. <br />
+  • Put /api/user/changePassword/{userId}: Change user password. <br />
+  
    <strong>Task</strong> <br />
   • POST /api/task: Create a new task. <br />
   • GET /api/task: Retrieve a list of all tasks. <br />
@@ -88,18 +99,6 @@ This step includes: <br />
   • GET /api/comment/{commentId}: Retrieve details of a specific comment. <br />
   • PUT /api/comment/{commentId}: Update the details of a comment. <br />
   • DELETE /api/comment/{commentId}: Delete a comment. <br />
-
- <strong>Token</strong> <br />
-  • POST /api/Token/refresh-token: Generate a new access token using a valid refresh token.<br />
-  • POST /api/Token/revoke-token: Revoke a refresh token (when user logs out).
-
-  <strong>User</strong> <br />
-  • GET /api/user: Retrieve a list of all users. <br />
-  • GET /api/user/{id}: Retrieve details of a specific user. <br />
-  • DELETE /api/user/{id}: Delete a user. <br />
-  • Put /api/user/Update/{userId}: Update user information. <br />
-  • Put /api/user/changePassword/{userId}: Change user password. <br />
-
 
 # Get Started 
   Follow these steps to set up and run the TaskManagement.API project locally:
