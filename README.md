@@ -100,9 +100,9 @@ This step includes: <br />
   • POST /api/team: Create a new team with a unique name. <br />
   • GET /api/team: Retrieve a list of all teams along with their member details<br />
   • DELETE /api/team/{teamId}: Delete a team and remove its association with members. <br />
-     <div style="margin-left: 20px;">
-        Tasks assigned to the team will also be disassociated.
-    </div> <br />
+   <blockquote style="margin-left: 20px;">
+Tasks assigned to the team will also be disassociated.
+</blockquote>
 
   <strong>Comments</strong> <br />
   • POST /api/comment: Create a new comment. <br />
