@@ -12,6 +12,9 @@ The API supports the following roles for users: Tester, Developer, TeamLead, Pro
 •	<strong>Comment Functionality:</strong> Allow users to create, update, and delete comments associated with tasks. <br />
 •	<strong>Customizable Task Attributes:</strong> Define task attributes such as title, description, due date, and status. <br />
 •	<strong>Task Attachments: </strong> Attach files or documents to tasks, providing additional context or resources. <br />
+•	<strong>Team Management:</strong> Create, view, update, and delete teams. Assign members to teams and associate tasks with teams. <br />
+    Retrieve a list of teams with member details.<br />
+  
 •	<strong>Update User Information:</strong> Allow users to update their personal information, including first name, last name, username, user role etc.<br />
 •	<strong>Change Password:</strong> Enable users to change their passwords securely, including verification of the current password.
 
@@ -92,6 +95,13 @@ This step includes: <br />
   • GET /api/task/{id}: Retrieve details of a specific task. <br />
   • PUT /api/task/{id}: Update the details of a task. <br />
   • DELETE /api/task/{id}: Delete a task. <br />
+
+  <strong>Team</strong> <br />
+  • POST /api/team: Create a new team with a unique name. <br />
+  • GET /api/team: Retrieve a list of all teams along with their member details<br />
+  • DELETE /api/team/{teamId}: Delete a team and remove its association with members. <br />
+      Tasks assigned to the team will also be disassociated.
+
 
   <strong>Comments</strong> <br />
   • POST /api/comment: Create a new comment. <br />
