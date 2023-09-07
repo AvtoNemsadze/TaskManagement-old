@@ -96,6 +96,11 @@ This step includes: <br />
   • PUT /api/task/{id}: Update the details of a task. <br />
   • DELETE /api/task/{id}: Delete a task. <br />
 
+  <strong>Team</strong> <br />
+  • POST /api/team: Create a new team with a unique name. <br />
+  • GET /api/team: Retrieve a list of all teams along with their member details<br />
+  • DELETE /api/team/{teamId}: Delete a team and remove its association with members. Tasks assigned to the team will also be disassociated. <br />
+
   <strong>Comments</strong> <br />
   • POST /api/comment: Create a new comment. <br />
   • GET /api/comment: Retrieve a list of all comments. <br />
