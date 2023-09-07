@@ -12,6 +12,7 @@ The API supports the following roles for users: Tester, Developer, TeamLead, Pro
 •	<strong>Comment Functionality:</strong> Allow users to create, update, and delete comments associated with tasks. <br />
 •	<strong>Customizable Task Attributes:</strong> Define task attributes such as title, description, due date, and status. <br />
 •	<strong>Task Attachments: </strong> Attach files or documents to tasks, providing additional context or resources. <br />
+•	<strong>Team Management:</strong> Create, view, update, and delete teams. Assign members to teams and associate tasks with teams. Retrieve a list of teams with member details.<br />
 •	<strong>Update User Information:</strong> Allow users to update their personal information, including first name, last name, username, user role etc.<br />
 •	<strong>Change Password:</strong> Enable users to change their passwords securely, including verification of the current password.
 
