@@ -19,7 +19,6 @@ namespace TaskManagement.API.Core.Services
 
         public async Task<Team> CreateTeamAsync(TeamCreateDto teamDto)
         {
-            // Validate input data
             if (string.IsNullOrWhiteSpace(teamDto.Name))
             {
                 throw new ArgumentException("Team name is required.");
@@ -33,7 +32,6 @@ namespace TaskManagement.API.Core.Services
                 CreatedDate = DateTime.UtcNow,
             };
 
-            // Add team members based on provided user IDs
             foreach (var memberId in teamDto.MemberIds)
             {
                 var member = await _context.Users.FindAsync(memberId);
@@ -43,7 +41,6 @@ namespace TaskManagement.API.Core.Services
                 }
             }
 
-            // Add the team to the database
             _context.Teams.Add(newTeam);
             await _context.SaveChangesAsync();
 
@@ -53,7 +50,7 @@ namespace TaskManagement.API.Core.Services
         public async Task<IEnumerable<TeamWithUsersDto>> GetTeamsWithUsersAsync()
         {
             var teams = await _context.Teams
-                .Include(t => t.Members) // Load the associated users
+                .Include(t => t.Members) 
                 .ToListAsync();
 
             return teams.Select(team => new TeamWithUsersDto

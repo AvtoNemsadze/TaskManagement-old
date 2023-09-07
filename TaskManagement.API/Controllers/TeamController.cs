@@ -34,7 +34,6 @@ namespace TaskManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                // Handle exceptions and return an appropriate error response
                 return BadRequest($"Error: {ex.Message}");
             }
         }
