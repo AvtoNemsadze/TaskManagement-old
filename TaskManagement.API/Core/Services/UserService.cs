@@ -4,6 +4,7 @@ using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Interface;
 using System.Security.Cryptography;
 using TaskManagement.API.Core.Common;
+using TaskManagement.API.Core.Entities;
 
 namespace TaskManagement.API.Core.Services
 {
@@ -75,6 +76,14 @@ namespace TaskManagement.API.Core.Services
             await _context.SaveChangesAsync();
 
             return new UserServiceResponse() { IsSucceed = true, Message = "User deleted successfully." };
+        }
+
+        // Get Users BY TeamId
+        public async Task<List<ApplicationUser>> GetUsersByTeamId(int teamId)
+        {
+            return await _context.Users
+                .Where(u => u.TeamId == teamId)
+                .ToListAsync();
         }
 
         #region UpdateUserAsync

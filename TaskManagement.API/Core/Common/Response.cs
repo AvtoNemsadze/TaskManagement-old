@@ -29,4 +29,8 @@
     public class CommentServiceResponse : Response
     {
     }
+
+    public class TeamResponse : Response
+    {
+    }
 }

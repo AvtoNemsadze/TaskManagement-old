@@ -51,6 +51,7 @@ namespace TaskManagement.API.Core.Services
                 Status = taskStatus,
                 Priority = taskCreateDto.Priority,
                 UserId = taskCreateDto.UserId,
+                TeamId = taskCreateDto.TeamId,
                 AttachFile = fileToSave ?? null,
             };
 
@@ -88,7 +89,7 @@ namespace TaskManagement.API.Core.Services
                    DueDate = taskEntity.DueDate,
                    Status = taskEntity.Status,
                    Priority = taskEntity.Priority,
-                   UserId = taskEntity.UserId,
+                   UserId = taskEntity.UserId ?? 0,
                    AttachFile = taskEntity.AttachFile,
                })
                .ToListAsync();
@@ -108,7 +109,7 @@ namespace TaskManagement.API.Core.Services
                     DueDate = taskEntity.DueDate,
                     Status = taskEntity.Status,
                     Priority = taskEntity.Priority,
-                    UserId = taskEntity.UserId,
+                    UserId = taskEntity.UserId ?? 0,
                     AttachFile = taskEntity.AttachFile,
                 })
                .FirstOrDefaultAsync();

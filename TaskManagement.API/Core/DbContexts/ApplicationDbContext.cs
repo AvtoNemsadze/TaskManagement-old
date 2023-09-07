@@ -16,6 +16,7 @@ namespace TaskManagement.API.Core.DbContexts
         public DbSet<UserRoleEntity> UserRoles { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<CommentEntity> Comments { get; set; }
+        public DbSet<Team> Teams { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,13 +24,19 @@ namespace TaskManagement.API.Core.DbContexts
               .HasOne(c => c.User)
               .WithMany(u => u.Comments)
               .HasForeignKey(c => c.UserId)
-              .OnDelete(DeleteBehavior.Restrict); // Cascade delete when a user is deleted
+              .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<CommentEntity>()
                 .HasOne(c => c.Task)
                 .WithMany(t => t.Comments)
                 .HasForeignKey(c => c.TaskId)
-                .OnDelete(DeleteBehavior.Restrict); // Cascade delete when a task is deleted
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Team>()
+                .HasMany(t => t.Members)
+                .WithOne(u => u.Team)
+                .HasForeignKey(u => u.TeamId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(modelBuilder);
         }
