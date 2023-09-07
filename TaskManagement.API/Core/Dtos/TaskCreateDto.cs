@@ -21,6 +21,7 @@ namespace TaskManagement.API.Core.Dtos
 
         [EnumDataType(typeof(TaskPriority))]
         public string Priority { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
+        public int? TeamId { get; set; }
     }
 }

@@ -29,12 +29,13 @@ namespace TaskManagement.API.Core.Entities
         [EnumDataType(typeof(TaskPriority))]
         public string Priority { get; set; }
 
+        // Foreign key to link a task with a user
         [ForeignKey("UserId")]
         [JsonIgnore]
         public ApplicationUser? User { get; set; }
         public int? UserId { get; set; }
 
-        // Define a foreign key to link a task with a team (nullable)
+        // Foreign key to link a task with a team
         [ForeignKey("TeamId")]
         [JsonIgnore]
         public Team? Team { get; set; }

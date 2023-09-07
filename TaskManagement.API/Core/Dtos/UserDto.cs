@@ -10,8 +10,6 @@ namespace TaskManagement.API.Core.Dtos
         public string Email { get; set; }
         public int Id { get; set; }
         public string Role { get; set; }
-
-        //public List<string> Roles { get; set; }
     }
 
 }

@@ -58,6 +58,9 @@ namespace TaskManagement.API.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("TeamId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -69,6 +72,8 @@ namespace TaskManagement.API.Migrations
                         .IsUnique();
 
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Users");
                 });
@@ -173,19 +178,49 @@ namespace TaskManagement.API.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("TeamId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TeamId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("TaskManagement.API.Core.Entities.Team", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.UserRoleEntity", b =>
@@ -216,7 +251,14 @@ namespace TaskManagement.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TaskManagement.API.Core.Entities.Team", "Team")
+                        .WithMany("Members")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Role");
+
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.CommentEntity", b =>
@@ -238,11 +280,15 @@ namespace TaskManagement.API.Migrations
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.TaskEntity", b =>
                 {
+                    b.HasOne("TaskManagement.API.Core.Entities.Team", "Team")
+                        .WithMany("Tasks")
+                        .HasForeignKey("TeamId");
+
                     b.HasOne("TaskManagement.API.Core.Entities.ApplicationUser", "User")
                         .WithMany("Tasks")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Team");
 
                     b.Navigation("User");
                 });
@@ -262,6 +308,13 @@ namespace TaskManagement.API.Migrations
             modelBuilder.Entity("TaskManagement.API.Core.Entities.TaskEntity", b =>
                 {
                     b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("TaskManagement.API.Core.Entities.Team", b =>
+                {
+                    b.Navigation("Members");
+
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

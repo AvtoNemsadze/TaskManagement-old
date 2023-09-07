@@ -40,6 +40,10 @@ namespace TaskManagement.API.Core.Entities
         public RoleEntity Role { get; set; }
         public int RoleId { get; set; }
 
+        [ForeignKey("TeamId")]
+        public Team? Team { get; set; }
+        public int? TeamId { get; set; }
+
         [JsonIgnore]
         public ICollection<TaskEntity>? Tasks { get; set; }
 

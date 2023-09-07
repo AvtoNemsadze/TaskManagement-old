@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace TaskManagement.API.Core.Entities
 {
@@ -16,7 +17,10 @@ namespace TaskManagement.API.Core.Entities
         [MaxLength(300)]
         public string? Description { get; set; }
 
+        public DateTime? CreatedDate { get; set; }
+
         // realtionship with other objects
+        [JsonIgnore]
         public ICollection<ApplicationUser> Members { get; set; } = new List<ApplicationUser>();
         public ICollection<TaskEntity> Tasks { get; set; } = new List<TaskEntity>();
     }
