@@ -13,13 +13,11 @@ namespace TaskManagement.API.Core.Services
     public class AuthService : IAuthService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _configuration;
         private readonly ITokenService _tokenService;
 
-        public AuthService(ApplicationDbContext context, IConfiguration configuration, ITokenService tokenService)
+        public AuthService(ApplicationDbContext context, ITokenService tokenService)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration)); 
             _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
         }
 
@@ -55,10 +53,21 @@ namespace TaskManagement.API.Core.Services
                 return new AuthServiceResponse() { IsSucceed = false, Message = "Invalid Credentials" };
             }
 
+
+            //    var userRoles = await _context.UserRoles
+            //     .Where(ur => ur.UserId == user.Id)
+            //     .Join(_context.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r.RoleName)
+            //     .ToListAsync();
+
             var userRoles = await _context.UserRoles
-             .Where(ur => ur.UserId == user.Id)
-             .Join(_context.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r.RoleName)
-             .ToListAsync();
+                .Where(ur => ur.UserId == user.Id)
+                .Select(ur => ur.RoleId) 
+                .ToListAsync();
+
+            var roleNames = await _context.Roles
+                .Where(r => userRoles.Contains(r.Id))
+                .Select(r => r.RoleName)
+                .ToListAsync();
 
             var authClaims = new List<Claim>
             {
@@ -69,9 +78,9 @@ namespace TaskManagement.API.Core.Services
                 new Claim("LastName", user.LastName),
             };
 
-            foreach (var role in userRoles)
+            foreach (var roleName in roleNames)
             {
-                authClaims.Add(new Claim(ClaimTypes.Role, role));
+                authClaims.Add(new Claim(ClaimTypes.Role, roleName));
             }
 
             var accessToken = _tokenService.GenerateAccessToken(authClaims);
@@ -83,7 +92,7 @@ namespace TaskManagement.API.Core.Services
             {
                 UserId = user.Id,
                 Token = refreshToken,
-                ExpirationDate = DateTime.Now.AddMinutes(2),
+                ExpirationDate = DateTime.Now.AddDays(7),
             };
             _context.RefreshTokens.Add(refreshTokenObject);
             _context.SaveChanges();
@@ -95,6 +104,7 @@ namespace TaskManagement.API.Core.Services
                 RefreshToken = refreshToken
             };
         }
+
         #endregion
 
         #region RegisterAsync
@@ -145,9 +155,9 @@ namespace TaskManagement.API.Core.Services
         {
             using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000, HashAlgorithmName.SHA256))
             {
-                byte[] hash = pbkdf2.GetBytes(32); // 32 bytes for a 256-bit hash
+                byte[] hash = pbkdf2.GetBytes(32); 
 
-                byte[] hashBytes = new byte[48]; // 16 bytes salt + 32 bytes hash
+                byte[] hashBytes = new byte[48]; 
                 Array.Copy(salt, 0, hashBytes, 0, 16);
                 Array.Copy(hash, 0, hashBytes, 16, 32);
 
