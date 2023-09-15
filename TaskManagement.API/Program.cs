@@ -65,14 +65,13 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
-
 builder.Services.AddScoped<ICommentService, CommentService>();
-
 builder.Services.AddScoped<TaskSeedData>();
 
 var app = builder.Build();
@@ -85,6 +84,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

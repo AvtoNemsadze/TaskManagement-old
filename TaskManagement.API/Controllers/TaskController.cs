@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using TaskManagement.API.Core.Dtos;
-using TaskManagement.API.Core.Entities;
+using TaskManagement.API.Core.Enums;
 using TaskManagement.API.Core.Interface;
-using TaskManagement.API.Core.OtherObjects;
-using TaskManagement.API.Core.Services;
 
 namespace TaskManagement.API.Controllers
 {
@@ -23,7 +21,6 @@ namespace TaskManagement.API.Controllers
 
 
         [HttpPost]
-        [Authorize(Policy = "AdminOrSuperAdminPolicy")]
         public async Task<IActionResult> CreateTask([FromForm] TaskCreateDto task, IFormFile? file)
         {
             try
@@ -38,6 +35,7 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Designer")]
         public async Task<ActionResult> GetAllTasks()
         {
             try

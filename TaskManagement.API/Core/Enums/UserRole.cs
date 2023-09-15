@@ -1,6 +1,6 @@
 ﻿namespace TaskManagement.API.Core.Enums
 {
-    // regular roles
+   // regular roles
     public enum UserRoles
     {
         None = 0,
@@ -10,4 +10,13 @@
         TeamLead,
         ProductManager
     }
+
+    //public static class UserRoles
+    //{
+    //    public const string Tester = "Tester";
+    //    public const string Developer = "Developer";
+    //    public const string Designer = "Designer";
+    //    public const string TeamLead = "TeamLead";
+    //    public const string ProductManager = "ProductManager";
+    //}
 }

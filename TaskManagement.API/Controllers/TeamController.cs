@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using TaskManagement.API.Core.DbContexts;
 using TaskManagement.API.Core.Dtos;
-using TaskManagement.API.Core.Enums;
 using TaskManagement.API.Core.Interface;
-using TaskManagement.API.Core.OtherObjects;
 
 namespace TaskManagement.API.Controllers
 {
@@ -14,17 +9,14 @@ namespace TaskManagement.API.Controllers
     [ApiController]
     public class TeamController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly ITeamService _teamService;
-        public TeamController(ApplicationDbContext context, ITeamService teamService)
+        public TeamController(ITeamService teamService)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
             _teamService = teamService ?? throw new ArgumentNullException(nameof(teamService));
         }
 
 
         [HttpPost]
-        [Authorize(Roles = nameof(UserRoles.TeamLead))]
         public async Task<IActionResult> CreateTeam([FromBody] TeamCreateDto teamDto)
         {
             try

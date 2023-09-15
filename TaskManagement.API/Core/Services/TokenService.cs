@@ -89,7 +89,6 @@ namespace TaskManagement.API.Core.Services
                 new Claim("LastName", user.LastName),
             };
 
-
             var userRoles = await _context.UserRoles
             .Where(ur => ur.UserId == user.Id)
             .Join(_context.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r.RoleName)

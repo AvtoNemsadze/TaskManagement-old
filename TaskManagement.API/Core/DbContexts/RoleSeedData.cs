@@ -20,5 +20,4 @@ namespace TaskManagement.API.Core.DbContexts
             new RoleEntity { RoleName = SystemRoles.SUPERADMIN }
         };
     }
-
 }
