@@ -37,7 +37,7 @@ namespace TaskManagement.API.Core.Entities
         public DateTime? CreatedDate { get; set; }
 
         [ForeignKey("RoleId")]
-        public RoleEntity Role { get; set; }
+        public Role Role { get; set; }
         public int RoleId { get; set; }
 
         [ForeignKey("TeamId")]
@@ -48,7 +48,7 @@ namespace TaskManagement.API.Core.Entities
         public ICollection<TaskEntity>? Tasks { get; set; }
 
         [JsonIgnore]
-        public ICollection<CommentEntity>? Comments { get; set; } = new List<CommentEntity>();
+        public ICollection<Comment>? Comments { get; set; } = new List<Comment>();
     }
 }
 

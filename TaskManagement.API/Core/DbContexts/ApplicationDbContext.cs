@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TaskManagement.API.Core.Entities;
 
-namespace TaskManagement.API.Core.DbContexts
+namespace TaskManagement.API.Core.DataAccess
 {
     public class ApplicationDbContext : DbContext
     {
@@ -10,23 +9,23 @@ namespace TaskManagement.API.Core.DbContexts
         {
         }
 
-        public DbSet<TaskEntity> Tasks { get; set; } 
-        public DbSet<ApplicationUser> Users { get; set; } 
-        public DbSet<RoleEntity> Roles { get; set; } 
-        public DbSet<UserRoleEntity> UserRoles { get; set; }
+        public DbSet<TaskEntity> Tasks { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-        public DbSet<CommentEntity> Comments { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<Team> Teams { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CommentEntity>()
+            modelBuilder.Entity<Comment>()
               .HasOne(c => c.User)
               .WithMany(u => u.Comments)
               .HasForeignKey(c => c.UserId)
               .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<CommentEntity>()
+            modelBuilder.Entity<Comment>()
                 .HasOne(c => c.Task)
                 .WithMany(t => t.Comments)
                 .HasForeignKey(c => c.TaskId)
