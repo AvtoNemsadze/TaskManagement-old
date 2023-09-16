@@ -1,1 +1,8 @@
-# ignore extra files
+# Ignore DLL files
+*.dll
+
+# Ignore PDB files
+*.pdb
+
+# Ignore SOU files (specific to Sourcetree)
+*.sou
