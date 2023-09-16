@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace TaskManagement.API.Core.Entities
 {
-    public class CommentEntity
+    public class Comment
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

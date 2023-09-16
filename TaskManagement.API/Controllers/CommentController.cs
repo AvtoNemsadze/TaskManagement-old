@@ -33,7 +33,7 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpPut("{commentId}")]
-        public async Task<ActionResult<CommentEntity>> UpdateComment(int commentId, string text)
+        public async Task<ActionResult<Comment>> UpdateComment(int commentId, string text)
         {
             var updatedComment = await _commentService.UpdateCommentAsync(commentId, text);
 
@@ -46,14 +46,14 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CommentEntity>>> GetAllComments()
+        public async Task<ActionResult<List<Comment>>> GetAllComments()
         {
             var comments = await _commentService.GetAllCommentsAsync();
             return Ok(comments);
         }
 
         [HttpGet("{commentId}")]
-        public async Task<ActionResult<List<CommentEntity>>> GetCommentById(int commentId)
+        public async Task<ActionResult<List<Comment>>> GetCommentById(int commentId)
         {
             var comment = await _commentService.GetCommentByIdAsync(commentId);
 
@@ -66,7 +66,7 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpGet("task/{taskId}")]
-        public async Task<ActionResult<List<CommentEntity>>> GetCommentsByTaskId(int taskId)
+        public async Task<ActionResult<List<Comment>>> GetCommentsByTaskId(int taskId)
         {
             var comments = await _commentService.GetCommentsByTaskIdAsync(taskId);
             return Ok(comments);

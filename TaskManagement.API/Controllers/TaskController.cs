@@ -10,7 +10,7 @@ namespace TaskManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class TaskController : ControllerBase
     {
         private readonly ITaskService _taskService;
@@ -35,7 +35,6 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Designer")]
         public async Task<ActionResult> GetAllTasks()
         {
             try

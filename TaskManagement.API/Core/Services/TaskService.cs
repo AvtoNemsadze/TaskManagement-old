@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using TaskManagement.API.Core.DbContexts;
+using TaskManagement.API.Core.DataAccess;
 using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Entities;
 using TaskManagement.API.Core.Enums;

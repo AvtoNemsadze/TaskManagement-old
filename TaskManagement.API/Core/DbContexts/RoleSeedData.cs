@@ -2,22 +2,22 @@
 using TaskManagement.API.Core.Enums;
 using TaskManagement.API.Core.OtherObjects;
 
-namespace TaskManagement.API.Core.DbContexts
+namespace TaskManagement.API.Core.DataAccess
 {
     public static class RoleSeedData
     {
-        public static readonly RoleEntity[] Roles =
+        public static readonly Role[] Roles =
         {
             // basic roles
-            new RoleEntity { RoleName = UserRoles.Tester.ToString(), Description = "Tester Role" },
-            new RoleEntity { RoleName = UserRoles.Developer.ToString(), Description = "Developer Role" },
-            new RoleEntity { RoleName = UserRoles.TeamLead.ToString(), Description = "TeamLead Role" },
-            new RoleEntity { RoleName = UserRoles.Designer.ToString(), Description = "Designer Role" },
-            new RoleEntity { RoleName = UserRoles.ProductManager.ToString(), Description = "ProductManager Role" },
+            new Role { RoleName = UserRoles.Tester.ToString(), Description = "Tester Role" },
+            new Role { RoleName = UserRoles.Developer.ToString(), Description = "Developer Role" },
+            new Role { RoleName = UserRoles.TeamLead.ToString(), Description = "TeamLead Role" },
+            new Role { RoleName = UserRoles.Designer.ToString(), Description = "Designer Role" },
+            new Role { RoleName = UserRoles.ProductManager.ToString(), Description = "ProductManager Role" },
 
             // System roles
-            new RoleEntity { RoleName = SystemRoles.ADMIN },
-            new RoleEntity { RoleName = SystemRoles.SUPERADMIN }
+            new Role { RoleName = SystemRoles.ADMIN },
+            new Role { RoleName = SystemRoles.SUPERADMIN }
         };
     }
 }

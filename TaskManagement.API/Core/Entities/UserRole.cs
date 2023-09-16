@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TaskManagement.API.Core.Entities
 {
-    public class UserRoleEntity
+    public class UserRole
     {
         [Key]
         public int UserId { get; set; }
