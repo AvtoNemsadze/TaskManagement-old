@@ -6,3 +6,8 @@
 
 # Ignore SOU files (specific to Sourcetree)
 *.sou
+
+#Ignore cashe files
+*.cache
+*.v2
+*.csproj
