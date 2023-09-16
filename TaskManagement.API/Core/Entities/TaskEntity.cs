@@ -44,6 +44,6 @@ namespace TaskManagement.API.Core.Entities
         public string? AttachFile { get; set; }
 
         [JsonIgnore]
-        public ICollection<CommentEntity>? Comments { get; set; } = new List<CommentEntity>();
+        public ICollection<Comment>? Comments { get; set; } = new List<Comment>();
     }
 }

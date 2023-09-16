@@ -4,7 +4,7 @@ using TaskManagement.API.Core.Enums;
 
 namespace TaskManagement.API.Core.Entities
 {
-    public class RoleEntity
+    public class Role
     {
         [Key]
         public int Id { get; set; }

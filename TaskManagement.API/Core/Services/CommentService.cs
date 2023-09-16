@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.Design;
 using TaskManagement.API.Core.Common;
-using TaskManagement.API.Core.DbContexts;
+using TaskManagement.API.Core.DataAccess;
 using TaskManagement.API.Core.Entities;
 using TaskManagement.API.Core.Interface;
 
@@ -15,12 +15,12 @@ namespace TaskManagement.API.Core.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<CommentEntity> CreateCommentAsync(int taskId, int userId, string commentText)
+        public async Task<Comment> CreateCommentAsync(int taskId, int userId, string commentText)
         {
             var task = await _context.Tasks.FindAsync(taskId) ?? throw new NullReferenceException("taskId does not exist"); 
             var user = await _context.Users.FindAsync(userId) ?? throw new NullReferenceException("userId does not exist");
            
-            var comment = new CommentEntity
+            var comment = new Comment
             {
                 Text = commentText,
                 Task = task,
@@ -34,7 +34,7 @@ namespace TaskManagement.API.Core.Services
             return comment;
         }
 
-        public async Task<CommentEntity> UpdateCommentAsync(int commentId, string text)
+        public async Task<Comment> UpdateCommentAsync(int commentId, string text)
         {
             var comment = await _context.Comments.FindAsync(commentId) ?? throw new NullReferenceException("comment does not exist"); 
 
@@ -46,18 +46,18 @@ namespace TaskManagement.API.Core.Services
         }
 
 
-        public async Task<List<CommentEntity>> GetAllCommentsAsync()
+        public async Task<List<Comment>> GetAllCommentsAsync()
         {
             return await _context.Comments.ToListAsync();
         }
 
-        public async Task<CommentEntity> GetCommentByIdAsync(int commentId)
+        public async Task<Comment> GetCommentByIdAsync(int commentId)
         {
             var comment = await _context.Comments.FindAsync(commentId) ?? throw new NullReferenceException("Comment Not Found");
             return comment;
         }
 
-        public async Task<List<CommentEntity>> GetCommentsByTaskIdAsync(int taskId)
+        public async Task<List<Comment>> GetCommentsByTaskIdAsync(int taskId)
         {
             return await _context.Comments
                 .Where(c => c.TaskId == taskId)

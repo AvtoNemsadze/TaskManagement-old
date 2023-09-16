@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
-using TaskManagement.API.Core.DbContexts;
+using TaskManagement.API.Core.DataAccess;
 using TaskManagement.API.Core.Interface;
 using TaskManagement.API.Core.OtherObjects;
 using TaskManagement.API.Core.Services;

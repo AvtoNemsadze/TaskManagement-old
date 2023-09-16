@@ -2,7 +2,7 @@
 using TaskManagement.API.Core.Enums;
 using TaskStatus = TaskManagement.API.Core.Enums.TaskStatus;
 
-namespace TaskManagement.API.Core.DbContexts
+namespace TaskManagement.API.Core.DataAccess
 {
     public class TaskSeedData
     {
@@ -96,7 +96,7 @@ namespace TaskManagement.API.Core.DbContexts
                     Title = "Create User Onboarding Video",
                     Description = "Create a video tutorial for new users to get started.",
                     DueDate = DateTime.UtcNow.AddDays(5),
-                    Status = TaskStatus.Started.ToString(),    
+                    Status = TaskStatus.Started.ToString(),
                     Priority = TaskPriority.Low.ToString(),
                      UserId = 2
                 },
@@ -116,4 +116,5 @@ namespace TaskManagement.API.Core.DbContexts
         }
     }
 }
+
 

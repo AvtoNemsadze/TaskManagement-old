@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using TaskManagement.API.Core.Common;
-using TaskManagement.API.Core.DbContexts;
+using TaskManagement.API.Core.DataAccess;
 using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Entities;
 using TaskManagement.API.Core.Interface;
@@ -130,7 +130,7 @@ namespace TaskManagement.API.Core.Services
                 RoleId = registerDto.RoleId,
             };
 
-            UserRoleEntity userRoles = new UserRoleEntity()
+            UserRole userRoles = new UserRole()
             {
                 UserId = appUser.Id,
                 RoleId = appUser.RoleId,
