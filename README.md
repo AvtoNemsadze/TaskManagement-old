@@ -10,6 +10,7 @@ The API supports the following roles for users: Tester, Developer, TeamLead, Pro
 
 •	<strong>Refresh Token Mechanism:</strong> Implement a token refresh mechanism for a seamless user experience. <br />
 •	<strong>Comment Functionality:</strong> Allow users to create, update, and delete comments associated with tasks. <br />
+•	<strong>Real-time notifications:</strong> Task creators receive instant updates when a comment is added to one of their tasks. <br />
 •	<strong>Customizable Task Attributes:</strong> Define task attributes such as title, description, due date, and status. <br />
 •	<strong>Task Attachments: </strong> Attach files or documents to tasks, providing additional context or resources. <br />
 •	<strong>Team Management:</strong> Create, view, update, and delete teams. Assign members to teams and associate tasks with teams.
