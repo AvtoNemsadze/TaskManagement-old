@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using TaskManagement.API.Core.DataAccess;
 using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Entities;
-using TaskManagement.API.Core.Enums;
+using TaskManagement.API.Core.Hubs;
 using TaskManagement.API.Core.Interface;
 using TaskStatus = TaskManagement.API.Core.Enums.TaskStatus;
 
@@ -53,13 +51,13 @@ namespace TaskManagement.API.Core.Services
                 UserId = taskCreateDto.UserId,
                 TeamId = taskCreateDto.TeamId,
                 AttachFile = fileToSave ?? null,
+                CreatedByUserId = taskCreateDto.CreatedByUserId
             };
 
             await _context.Tasks.AddAsync(newTask);
             await _context.SaveChangesAsync();
 
             return newTask;
-
         }
 
         private static async Task<string> SaveFileAsync(IFormFile? file)

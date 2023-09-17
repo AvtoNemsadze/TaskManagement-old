@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.StaticFiles;
 using TaskManagement.API.Core.Dtos;
 using TaskManagement.API.Core.Enums;
+using TaskManagement.API.Core.Hubs;
 using TaskManagement.API.Core.Interface;
 
 namespace TaskManagement.API.Controllers

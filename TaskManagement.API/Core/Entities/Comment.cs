@@ -17,12 +17,10 @@ namespace TaskManagement.API.Core.Entities
 
         [ForeignKey("TaskId")]
         [JsonIgnore]
-        //[DeleteBehavior(DeleteBehavior.Cascade)]
         public TaskEntity? Task { get; set; }
         public int? TaskId { get; set; }
 
         [ForeignKey("UserId")]
-        //[DeleteBehavior(DeleteBehavior.Cascade)]
         [JsonIgnore]
         public ApplicationUser? User { get; set; }
         public int? UserId { get; set; }

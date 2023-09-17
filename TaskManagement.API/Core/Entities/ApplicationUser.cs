@@ -44,6 +44,9 @@ namespace TaskManagement.API.Core.Entities
         public Team? Team { get; set; }
         public int? TeamId { get; set; }
 
+        [InverseProperty("CreatedByUser")]
+        public ICollection<TaskEntity> CreatedTasks { get; set; }
+
         [JsonIgnore]
         public ICollection<TaskEntity>? Tasks { get; set; }
 

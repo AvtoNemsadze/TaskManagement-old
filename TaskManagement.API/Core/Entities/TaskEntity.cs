@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using TaskManagement.API.Core.Enums;
@@ -28,6 +26,14 @@ namespace TaskManagement.API.Core.Entities
 
         [EnumDataType(typeof(TaskPriority))]
         public string Priority { get; set; }
+
+
+        // Foreign key to link a task with a user (Creator)
+        [ForeignKey("CreatedByUserId")]
+        [JsonIgnore]
+        public ApplicationUser CreatedByUser { get; set; }
+        public int CreatedByUserId { get; set; }
+
 
         // Foreign key to link a task with a user
         [ForeignKey("UserId")]

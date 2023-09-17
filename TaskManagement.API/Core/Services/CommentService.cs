@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.Design;
 using TaskManagement.API.Core.Common;
 using TaskManagement.API.Core.DataAccess;
 using TaskManagement.API.Core.Entities;
+using TaskManagement.API.Core.Hubs;
 using TaskManagement.API.Core.Interface;
 
 namespace TaskManagement.API.Core.Services
@@ -10,9 +12,11 @@ namespace TaskManagement.API.Core.Services
     public class CommentService : ICommentService
     {
         private readonly ApplicationDbContext _context;
-        public CommentService(ApplicationDbContext context)
+        private readonly IHubContext<CommentHub> _hubContext;
+        public CommentService(ApplicationDbContext context, IHubContext<CommentHub> hubContext)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
         }
 
         public async Task<Comment> CreateCommentAsync(int taskId, int userId, string commentText)
@@ -30,6 +34,10 @@ namespace TaskManagement.API.Core.Services
 
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
+
+            // Notify the task's creator (CreatedByUserId) when someone adds a comment to the task
+            var ownerId = task.CreatedByUserId.ToString();
+            await _hubContext.Clients.User(ownerId).SendAsync("ReceiveTaskCommentNotification", taskId, commentText);
 
             return comment;
         }

@@ -17,7 +17,7 @@ namespace TaskManagement.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -78,7 +78,7 @@ namespace TaskManagement.API.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TaskManagement.API.Core.Entities.CommentEntity", b =>
+            modelBuilder.Entity("TaskManagement.API.Core.Entities.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -131,7 +131,7 @@ namespace TaskManagement.API.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("TaskManagement.API.Core.Entities.RoleEntity", b =>
+            modelBuilder.Entity("TaskManagement.API.Core.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -162,6 +162,9 @@ namespace TaskManagement.API.Migrations
                     b.Property<string>("AttachFile")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
@@ -190,6 +193,8 @@ namespace TaskManagement.API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("TeamId");
 
@@ -223,7 +228,7 @@ namespace TaskManagement.API.Migrations
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("TaskManagement.API.Core.Entities.UserRoleEntity", b =>
+            modelBuilder.Entity("TaskManagement.API.Core.Entities.UserRole", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -245,7 +250,7 @@ namespace TaskManagement.API.Migrations
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.ApplicationUser", b =>
                 {
-                    b.HasOne("TaskManagement.API.Core.Entities.RoleEntity", "Role")
+                    b.HasOne("TaskManagement.API.Core.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -261,7 +266,7 @@ namespace TaskManagement.API.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("TaskManagement.API.Core.Entities.CommentEntity", b =>
+            modelBuilder.Entity("TaskManagement.API.Core.Entities.Comment", b =>
                 {
                     b.HasOne("TaskManagement.API.Core.Entities.TaskEntity", "Task")
                         .WithMany("Comments")
@@ -280,6 +285,12 @@ namespace TaskManagement.API.Migrations
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.TaskEntity", b =>
                 {
+                    b.HasOne("TaskManagement.API.Core.Entities.ApplicationUser", "CreatedByUser")
+                        .WithMany("CreatedTasks")
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TaskManagement.API.Core.Entities.Team", "Team")
                         .WithMany("Tasks")
                         .HasForeignKey("TeamId");
@@ -287,6 +298,8 @@ namespace TaskManagement.API.Migrations
                     b.HasOne("TaskManagement.API.Core.Entities.ApplicationUser", "User")
                         .WithMany("Tasks")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("CreatedByUser");
 
                     b.Navigation("Team");
 
@@ -297,10 +310,12 @@ namespace TaskManagement.API.Migrations
                 {
                     b.Navigation("Comments");
 
+                    b.Navigation("CreatedTasks");
+
                     b.Navigation("Tasks");
                 });
 
-            modelBuilder.Entity("TaskManagement.API.Core.Entities.RoleEntity", b =>
+            modelBuilder.Entity("TaskManagement.API.Core.Entities.Role", b =>
                 {
                     b.Navigation("Users");
                 });
