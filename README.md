@@ -65,6 +65,13 @@ This step includes: <br />
   <strong>2. Basic Roles</strong> <br />
      • This Include: Tester, Developer, Designer, TeamLead and ProductManager Roles - These roles define the level of access and control users have within the application. 
 
+# Real-Time Updates with SignalR
+This project leverages SignalR, a library for adding real-time functionality to web applications, to provide users with instant updates when a comment is added to a task. <br />
+<strong>Key Features:</strong>
+- Real-time notifications: Task creators receive instant updates when a comment is added to one of their tasks. <br />
+- Seamless integration: SignalR is seamlessly integrated into the application, allowing for efficient, low-latency communication. <br />
+- Scalability: The real-time update system is designed to handle high volumes of concurrent connections, ensuring a smooth experience for users. <br />
+
 # Technologies Used
   • ASP.NET Core 7 <br />
   • Entitiy Framework Core <br />
