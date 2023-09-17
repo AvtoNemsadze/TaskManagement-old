@@ -12,15 +12,13 @@ namespace TaskManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class CommentController : ControllerBase
     {
         private readonly ICommentService _commentService;
-        private readonly IHubContext<TaskHub> _hubContext;
-        public CommentController(ICommentService commentService, IHubContext<TaskHub> hubContext)
+        public CommentController(ICommentService commentService)
         {
             _commentService = commentService ?? throw new ArgumentNullException(nameof(commentService));
-            _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
         }
 
         [HttpPost]
