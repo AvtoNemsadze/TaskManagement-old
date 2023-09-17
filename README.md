@@ -67,6 +67,7 @@ This step includes: <br />
 
 # Real-Time Updates with SignalR
 This project leverages SignalR, a library for adding real-time functionality to web applications, to provide users with instant updates when a comment is added to a task. <br />
+
 <strong>Key Features:</strong>
 - Real-time notifications: Task creators receive instant updates when a comment is added to one of their tasks. <br />
 - Seamless integration: SignalR is seamlessly integrated into the application, allowing for efficient, low-latency communication. <br />
