@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.ComponentModel.Design;
 using TaskManagement.API.Core.Entities;
+using TaskManagement.API.Core.Hubs;
 using TaskManagement.API.Core.Interface;
 using TaskManagement.API.Core.Services;
 
@@ -10,13 +12,15 @@ namespace TaskManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class CommentController : ControllerBase
     {
         private readonly ICommentService _commentService;
-        public CommentController(ICommentService commentService)
+        private readonly IHubContext<TaskHub> _hubContext;
+        public CommentController(ICommentService commentService, IHubContext<TaskHub> hubContext)
         {
             _commentService = commentService ?? throw new ArgumentNullException(nameof(commentService));
+            _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
         }
 
         [HttpPost]

@@ -26,7 +26,8 @@ namespace TaskManagement.API.Core.DataAccess
                     DueDate = DateTime.UtcNow.AddDays(7),
                     Status = TaskStatus.NotStarted.ToString(),
                     Priority = TaskPriority.Medium.ToString(),
-                     UserId = 1
+                    UserId = 1,
+                    CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -35,7 +36,8 @@ namespace TaskManagement.API.Core.DataAccess
                     DueDate = DateTime.UtcNow.AddDays(2),
                     Status = TaskStatus.InProgress.ToString(),
                     Priority = TaskPriority.High.ToString(),
-                     UserId = 2
+                    UserId = 2,
+                    CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -44,7 +46,8 @@ namespace TaskManagement.API.Core.DataAccess
                     DueDate = DateTime.UtcNow.AddDays(3),
                     Status = TaskStatus.Started.ToString(),
                     Priority = TaskPriority.Medium.ToString(),
-                     UserId = 1
+                    UserId = 1,
+                    CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -53,7 +56,8 @@ namespace TaskManagement.API.Core.DataAccess
                     DueDate = DateTime.UtcNow.AddDays(5),
                     Status = TaskStatus.NotStarted.ToString(),
                     Priority = TaskPriority.Low.ToString(),
-                     UserId = 2
+                    UserId = 2,
+                    CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -62,7 +66,8 @@ namespace TaskManagement.API.Core.DataAccess
                     DueDate = DateTime.UtcNow.AddDays(10),
                     Status = TaskStatus.NotStarted.ToString(),
                     Priority = TaskPriority.Medium.ToString(),
-                     UserId = 1
+                    UserId = 1,
+                    CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -71,7 +76,8 @@ namespace TaskManagement.API.Core.DataAccess
                     DueDate = DateTime.UtcNow.AddDays(2),
                     Status = TaskStatus.InProgress.ToString(),
                     Priority = TaskPriority.High.ToString(),
-                     UserId = 2
+                    UserId = 2,
+                    CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -80,7 +86,8 @@ namespace TaskManagement.API.Core.DataAccess
                     DueDate = DateTime.UtcNow.AddDays(14),
                     Status = TaskStatus.NotStarted.ToString(),
                     Priority = TaskPriority.High.ToString(),
-                     UserId = 1
+                    UserId = 1,
+                    CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -89,7 +96,8 @@ namespace TaskManagement.API.Core.DataAccess
                     DueDate = DateTime.UtcNow.AddDays(7),
                     Status = TaskStatus.InProgress.ToString(),
                     Priority = TaskPriority.Medium.ToString(),
-                     UserId = 1
+                    UserId = 1,
+                    CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -98,7 +106,8 @@ namespace TaskManagement.API.Core.DataAccess
                     DueDate = DateTime.UtcNow.AddDays(5),
                     Status = TaskStatus.Started.ToString(),
                     Priority = TaskPriority.Low.ToString(),
-                     UserId = 2
+                    UserId = 2,
+                    CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -107,7 +116,8 @@ namespace TaskManagement.API.Core.DataAccess
                     DueDate = DateTime.UtcNow.AddDays(8),
                     Status = TaskStatus.Started.ToString(),
                     Priority = TaskPriority.Low.ToString(),
-                    UserId = 2
+                    UserId = 2,
+                    CreatedByUserId = 30
                 },
             };
                 _context.Tasks.AddRange(tasks);

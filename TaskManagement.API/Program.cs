@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
 using TaskManagement.API.Core.DataAccess;
+using TaskManagement.API.Core.Hubs;
 using TaskManagement.API.Core.Interface;
 using TaskManagement.API.Core.OtherObjects;
 using TaskManagement.API.Core.Services;
@@ -52,6 +53,12 @@ builder.Services.AddSwaggerGen();
 
 //builder.Services.AddAutoMapper(typeof(AutoMapperConfigProfile));
 
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("local"));
@@ -73,6 +80,9 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<TaskSeedData>();
+
+//add SignalR
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -101,5 +111,6 @@ using (var scope = app.Services.CreateScope())
     // Seed Task Data
     dbInitializer.SeedData();
 }
+app.MapHub<CommentHub>("commentHub");
 
 app.Run();

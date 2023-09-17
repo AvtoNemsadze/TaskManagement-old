@@ -23,5 +23,6 @@ namespace TaskManagement.API.Core.Dtos
         public string Priority { get; set; }
         public int? UserId { get; set; }
         public int? TeamId { get; set; }
+        public int CreatedByUserId { get; set; }
     }
 }
