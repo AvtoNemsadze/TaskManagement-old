@@ -18,11 +18,11 @@ namespace TaskManagement.API.Core.Entities
         [MaxLength(500)]
         public string? Description { get; set; }
 
-        public DateTime? DueDate { get; set; } 
+        public DateTime? DueDate { get; set; }
 
         [EnumDataType(typeof(Enums.TaskStatus))]
         [MaxLength(50)]
-        public string Status { get; set; } 
+        public string Status { get; set; }
 
         [EnumDataType(typeof(TaskPriority))]
         public string Priority { get; set; }

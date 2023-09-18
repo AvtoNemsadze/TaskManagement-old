@@ -27,7 +27,7 @@ namespace TaskManagement.API.Core.DataAccess
                     Status = TaskStatus.NotStarted.ToString(),
                     Priority = TaskPriority.Medium.ToString(),
                     UserId = 1,
-                    CreatedByUserId = 30
+                    //CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -37,7 +37,7 @@ namespace TaskManagement.API.Core.DataAccess
                     Status = TaskStatus.InProgress.ToString(),
                     Priority = TaskPriority.High.ToString(),
                     UserId = 2,
-                    CreatedByUserId = 30
+                    //CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -47,7 +47,7 @@ namespace TaskManagement.API.Core.DataAccess
                     Status = TaskStatus.Started.ToString(),
                     Priority = TaskPriority.Medium.ToString(),
                     UserId = 1,
-                    CreatedByUserId = 30
+                    //CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -57,7 +57,7 @@ namespace TaskManagement.API.Core.DataAccess
                     Status = TaskStatus.NotStarted.ToString(),
                     Priority = TaskPriority.Low.ToString(),
                     UserId = 2,
-                    CreatedByUserId = 30
+                    //CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -67,7 +67,7 @@ namespace TaskManagement.API.Core.DataAccess
                     Status = TaskStatus.NotStarted.ToString(),
                     Priority = TaskPriority.Medium.ToString(),
                     UserId = 1,
-                    CreatedByUserId = 30
+                    //CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -77,7 +77,7 @@ namespace TaskManagement.API.Core.DataAccess
                     Status = TaskStatus.InProgress.ToString(),
                     Priority = TaskPriority.High.ToString(),
                     UserId = 2,
-                    CreatedByUserId = 30
+                    //CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -87,7 +87,7 @@ namespace TaskManagement.API.Core.DataAccess
                     Status = TaskStatus.NotStarted.ToString(),
                     Priority = TaskPriority.High.ToString(),
                     UserId = 1,
-                    CreatedByUserId = 30
+                    //CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -97,7 +97,7 @@ namespace TaskManagement.API.Core.DataAccess
                     Status = TaskStatus.InProgress.ToString(),
                     Priority = TaskPriority.Medium.ToString(),
                     UserId = 1,
-                    CreatedByUserId = 30
+                    //CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -107,7 +107,7 @@ namespace TaskManagement.API.Core.DataAccess
                     Status = TaskStatus.Started.ToString(),
                     Priority = TaskPriority.Low.ToString(),
                     UserId = 2,
-                    CreatedByUserId = 30
+                    //CreatedByUserId = 30
                 },
                 new TaskEntity
                 {
@@ -117,7 +117,7 @@ namespace TaskManagement.API.Core.DataAccess
                     Status = TaskStatus.Started.ToString(),
                     Priority = TaskPriority.Low.ToString(),
                     UserId = 2,
-                    CreatedByUserId = 30
+                    //CreatedByUserId = 30
                 },
             };
                 _context.Tasks.AddRange(tasks);
