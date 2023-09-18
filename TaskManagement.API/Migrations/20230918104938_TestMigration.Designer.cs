@@ -12,8 +12,8 @@ using TaskManagement.API.Core.DataAccess;
 namespace TaskManagement.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230918075937_updateFK")]
-    partial class updateFK
+    [Migration("20230918104938_TestMigration")]
+    partial class TestMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -186,6 +186,12 @@ namespace TaskManagement.API.Migrations
 
                     b.Property<int?>("TeamId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TestProperty")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TestProperty2")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
