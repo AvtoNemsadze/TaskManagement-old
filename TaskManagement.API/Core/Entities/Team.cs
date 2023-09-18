@@ -19,6 +19,11 @@ namespace TaskManagement.API.Core.Entities
 
         public DateTime? CreatedDate { get; set; }
 
+        // Creator information
+        [ForeignKey("CreatorId")]
+        public ApplicationUser Creator { get; set; } // Navigation property to refer to the Creator
+        public int CreatorId { get; set; }
+
         // realtionship with other objects
         [JsonIgnore]
         public ICollection<ApplicationUser> Members { get; set; } = new List<ApplicationUser>();

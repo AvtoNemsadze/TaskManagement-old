@@ -30,6 +30,7 @@ namespace TaskManagement.API.Core.Services
                 Name = teamDto.Name,
                 Description = teamDto.Description,
                 CreatedDate = DateTime.UtcNow,
+                CreatorId = teamDto.CreatorId,
             };
 
             foreach (var memberId in teamDto.MemberIds)
@@ -40,6 +41,7 @@ namespace TaskManagement.API.Core.Services
                     newTeam.Members.Add(member);
                 }
             }
+
 
             _context.Teams.Add(newTeam);
             await _context.SaveChangesAsync();

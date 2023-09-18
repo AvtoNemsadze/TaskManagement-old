@@ -52,6 +52,9 @@ namespace TaskManagement.API.Core.Entities
 
         [JsonIgnore]
         public ICollection<Comment>? Comments { get; set; } = new List<Comment>();
+
+        [JsonIgnore]
+        public ICollection<Team> CreatedTeams { get; set; }
     }
 }
 

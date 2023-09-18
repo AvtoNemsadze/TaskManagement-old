@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -114,3 +115,41 @@ using (var scope = app.Services.CreateScope())
 app.MapHub<CommentHub>("commentHub");
 
 app.Run();
+
+
+//protected override void Up(MigrationBuilder migrationBuilder)
+//{
+//    migrationBuilder.AddColumn<int>(
+//        name: "CreatorId",
+//        table: "Teams",
+//        type: "int",
+//        nullable: true);
+
+//    migrationBuilder.CreateIndex(
+//        name: "IX_Teams_CreatorId",
+//        table: "Teams",
+//        column: "CreatorId");
+
+//    migrationBuilder.AddForeignKey(
+//        name: "FK_Teams_Users_CreatorId",
+//        table: "Teams",
+//        column: "CreatorId",
+//        principalTable: "Users",
+//        principalColumn: "Id");
+//}
+
+///// <inheritdoc />
+//protected override void Down(MigrationBuilder migrationBuilder)
+//{
+//    migrationBuilder.DropForeignKey(
+//        name: "FK_Teams_Users_CreatorId",
+//        table: "Teams");
+
+//    migrationBuilder.DropIndex(
+//        name: "IX_Teams_CreatorId",
+//        table: "Teams");
+
+//    migrationBuilder.DropColumn(
+//        name: "CreatorId",
+//        table: "Teams");
+//}
