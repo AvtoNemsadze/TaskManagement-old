@@ -15,9 +15,9 @@ namespace TaskManagement.API.Core.Dtos
 
         public DateTime? DueDate { get; set; }
 
-        [EnumDataType(typeof(Enums.TaskStatus))]
-        [MaxLength(50)]
-        public string Status { get; set; }
+        //[EnumDataType(typeof(Enums.TaskStatus))]
+        //[MaxLength(50)]
+        //public string Status { get; set; }
 
         [EnumDataType(typeof(TaskPriority))]
         public string Priority { get; set; }

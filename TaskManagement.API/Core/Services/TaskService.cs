@@ -41,6 +41,9 @@ namespace TaskManagement.API.Core.Services
                 fileToSave = await SaveFileAsync(file);
             }
 
+            // Check if the user exists
+            var createdByUser = await _context.Users.FindAsync(taskCreateDto.CreatedByUserId) ?? throw new NullReferenceException("User not found");
+
             var newTask = new TaskEntity
             {
                 Title = taskCreateDto.Title,
@@ -53,6 +56,8 @@ namespace TaskManagement.API.Core.Services
                 AttachFile = fileToSave ?? null,
                 CreatedByUserId = taskCreateDto.CreatedByUserId
             };
+
+            newTask.CreatedByUserId = createdByUser.Id;
 
             await _context.Tasks.AddAsync(newTask);
             await _context.SaveChangesAsync();

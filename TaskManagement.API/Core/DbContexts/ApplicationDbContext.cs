@@ -38,13 +38,12 @@ namespace TaskManagement.API.Core.DataAccess
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Configure the one-to-many relationship between ApplicationUser and TaskEntity
-            modelBuilder.Entity<ApplicationUser>()
-                .HasMany(u => u.CreatedTasks)
-                .WithOne(t => t.CreatedByUser)
-                .HasForeignKey(t => t.CreatedByUserId);
+            //modelBuilder.Entity<ApplicationUser>()
+            //    .HasMany(u => u.CreatedTasks)
+            //    .WithOne(t => t.CreatedByUser)
+            //    .HasForeignKey(t => t.CreatedByUserId);
 
             base.OnModelCreating(modelBuilder);
         }
-
     }
 }
