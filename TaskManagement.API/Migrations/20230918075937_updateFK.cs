@@ -5,17 +5,17 @@
 namespace TaskManagement.API.Migrations
 {
     /// <inheritdoc />
-    public partial class updateCreatorID : Migration
+    public partial class updateFK : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "CreatedByUserId",
-                table: "Tasks",
-                nullable: false,
-                defaultValue: 0
-            );
+              name: "CreatedByUserId",
+              table: "Tasks",
+              nullable: false,
+              defaultValue: null
+          );
         }
 
         /// <inheritdoc />

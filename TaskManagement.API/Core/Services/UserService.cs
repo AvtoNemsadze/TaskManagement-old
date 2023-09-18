@@ -71,6 +71,9 @@ namespace TaskManagement.API.Core.Services
             var userComments = _context.Comments.Where(c => c.UserId == userId);
             _context.Comments.RemoveRange(userComments);
 
+            // Find all tasks created by the user and delete them
+            var userTasks = _context.Tasks.Where(t => t.CreatedByUserId == userId);
+            _context.Tasks.RemoveRange(userTasks);
 
             _context.Users.Remove(userToDelete);
             await _context.SaveChangesAsync();

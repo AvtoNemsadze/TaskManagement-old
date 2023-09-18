@@ -9,7 +9,7 @@ namespace TaskManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -41,7 +41,7 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpDelete("{userId}")]
-        [Authorize(Roles = SystemRoles.SUPERADMIN)]
+        //[Authorize(Roles = SystemRoles.SUPERADMIN)]
         public async Task<IActionResult> DeleteUserById(int userId)
         {
             var response = await _userService.DeleteUserByIdAsync(userId);

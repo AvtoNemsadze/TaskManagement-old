@@ -12,8 +12,8 @@ using TaskManagement.API.Core.DataAccess;
 namespace TaskManagement.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230917145346_removeTaskReferenceField")]
-    partial class removeTaskReferenceField
+    [Migration("20230918075937_updateFK")]
+    partial class updateFK
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
