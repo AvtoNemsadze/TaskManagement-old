@@ -27,13 +27,8 @@ namespace TaskManagement.API.Core.Entities
         [EnumDataType(typeof(TaskPriority))]
         public string Priority { get; set; }
 
-
-        // Foreign key to link a task with a user (Creator)
-        [ForeignKey("CreatedByUserId")]
-        [JsonIgnore]
         public ApplicationUser CreatedByUser { get; set; }
         public int CreatedByUserId { get; set; }
-
 
         // Foreign key to link a task with a user
         [ForeignKey("UserId")]

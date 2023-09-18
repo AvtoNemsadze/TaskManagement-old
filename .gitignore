@@ -11,3 +11,4 @@
 *.cache
 *.v2
 *.csproj
+*.vs

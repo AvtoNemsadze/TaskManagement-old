@@ -12,7 +12,7 @@ namespace TaskManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class TaskController : ControllerBase
     {
         private readonly ITaskService _taskService;
@@ -32,7 +32,7 @@ namespace TaskManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred while creating the task.");
+                return StatusCode(500, $"{ex.Message}");
             }
         }
 
