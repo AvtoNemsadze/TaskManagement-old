@@ -43,11 +43,11 @@ namespace TaskManagement.API.Core.DataAccess
             //    .WithOne(t => t.CreatedByUser)
             //    .HasForeignKey(t => t.CreatedByUserId);
 
-            modelBuilder.Entity<Team>()
-               .HasOne(t => t.Creator) // Team has one Creator
-               .WithMany() // No navigation property on the Creator side
-               .HasForeignKey(t => t.CreatorId)
-               .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Team>()
+            //   .HasOne(t => t.Creator) // Team has one Creator
+            //   .WithMany() // No navigation property on the Creator side
+            //   .HasForeignKey(t => t.CreatorId)
+            //   .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(modelBuilder);
         }

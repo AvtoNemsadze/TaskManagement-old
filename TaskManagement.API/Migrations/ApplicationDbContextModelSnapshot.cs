@@ -75,7 +75,7 @@ namespace TaskManagement.API.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.Comment", b =>
@@ -106,7 +106,7 @@ namespace TaskManagement.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.RefreshToken", b =>
@@ -128,7 +128,7 @@ namespace TaskManagement.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.Role", b =>
@@ -148,7 +148,7 @@ namespace TaskManagement.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.TaskEntity", b =>
@@ -200,7 +200,7 @@ namespace TaskManagement.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tasks", (string)null);
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.Team", b =>
@@ -225,7 +225,7 @@ namespace TaskManagement.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams", (string)null);
+                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.UserRole", b =>
@@ -245,7 +245,7 @@ namespace TaskManagement.API.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("UserRoles", (string)null);
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("TaskManagement.API.Core.Entities.ApplicationUser", b =>

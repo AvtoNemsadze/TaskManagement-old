@@ -30,7 +30,7 @@ namespace TaskManagement.API.Core.Services
                 Name = teamDto.Name,
                 Description = teamDto.Description,
                 CreatedDate = DateTime.UtcNow,
-                CreatorId = teamDto.CreatorId,
+                //CreatorId = teamDto.CreatorId,
             };
 
             foreach (var memberId in teamDto.MemberIds)
